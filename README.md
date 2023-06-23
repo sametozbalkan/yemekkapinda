@@ -1,3 +1,3 @@
 # Online Yemek Siparişi Uygulaması
 
-Henüz emekleme aşamasında, online yemek sipariş için bir uygulama.
+Henüz çok erken aşamada, Flutter kullanılarak yapılmış, online yemek sipariş için bir uygulama.
