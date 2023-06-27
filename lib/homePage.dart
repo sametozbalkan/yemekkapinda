@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'restaurantPage.dart';
-import 'restaurantDetay.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -14,8 +13,6 @@ void main() {
     },
   ));
 }
-
-
 
 class Main extends StatelessWidget {
   const Main({super.key});
@@ -120,6 +117,7 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+
   static final List<Widget> _widgetOptions = <Widget>[
     Padding(
       padding: const EdgeInsets.all(5),
@@ -160,7 +158,7 @@ class _HomePageState extends State<HomePage> {
           //  },
           //),
           GestureDetector(
-            child: restorantCard(3.5, "  Bedesten Büfe  ", "Hatay usulü döner",
+            child: restorantCard(3.5, " Bedesten Büfe ", "Hatay usulü döner",
                 "doner", "Acılı", "Yerel Lezzet"),
             onTap: () {
               Navigator.push(
@@ -170,8 +168,8 @@ class _HomePageState extends State<HomePage> {
             },
           ),
           GestureDetector(
-            child: restorantCard(4.5, "Urfa Ev Yemekleri", "Yöresel lezzetler",
-                "elite", "Acılı", "Yerel Lezzet"),
+            child: restorantCard(4.0, "  Taze İçecekler  ",
+                "Soğuk mevye suları", "juice", "Taze", "Soğuk"),
             onTap: () {
               Navigator.push(
                 abo,
@@ -190,28 +188,8 @@ class _HomePageState extends State<HomePage> {
             },
           ),
           GestureDetector(
-            child: restorantCard(1.5, "Urfa Ev Yemekleri", "Yöresel lezzetler",
-                "elite", "Acılı", "Yerel Lezzet"),
-            onTap: () {
-              Navigator.push(
-                abo,
-                MaterialPageRoute(builder: (context) => const RestaurantPage()),
-              );
-            },
-          ),
-          GestureDetector(
-            child: restorantCard(2.5, "Urfa Ev Yemekleri", "Yöresel lezzetler",
-                "elite", "Acılı", "Yerel Lezzet"),
-            onTap: () {
-              Navigator.push(
-                abo,
-                MaterialPageRoute(builder: (context) => const RestaurantPage()),
-              );
-            },
-          ),
-          GestureDetector(
-            child: restorantCard(5.0, "Urfa Ev Yemekleri", "Yöresel lezzetler",
-                "elite", "Acılı", "Yerel Lezzet"),
+            child: restorantCard(3.5, "    Meriç Döner    ",
+                "Hatay usulü döner", "doner", "Acılı", "Yerel Lezzet"),
             onTap: () {
               Navigator.push(
                 abo,
@@ -230,41 +208,41 @@ class _HomePageState extends State<HomePage> {
           Visibility(
               visible: true,
               child: Card(
-            color: Colors.redAccent,
-            child: Column(
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: Column(
-                    children: <Widget>[
-                      Wrap(
-                        children: [
-                          Row(
+                color: Colors.redAccent,
+                child: Column(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Column(
+                        children: <Widget>[
+                          Wrap(
                             children: [
-                              const Expanded(
-                                  flex: 9,
-                                  child: Text(
-                                    "Burada sepetine eklediklerini düzenleyebilir veya çıkarabilirsin. Sepete birden çok ekleme yapabilirsin ancak tek bir restoranttan sipariş verebilirsin!",
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 17),
-                                  )),
-                              Expanded(
-                                  flex: 1,
-                                  child: IconButton(
-                                    icon:
-                                        Icon(Icons.cancel, color: Colors.white),
-                                    onPressed: () {},
-                                  )),
+                              Row(
+                                children: [
+                                  const Expanded(
+                                      flex: 9,
+                                      child: Text(
+                                        "Burada sepetine eklediklerini düzenleyebilir veya çıkarabilirsin. Sepete birden çok ekleme yapabilirsin ancak tek bir restoranttan sipariş verebilirsin!",
+                                        style: TextStyle(
+                                            color: Colors.white, fontSize: 17),
+                                      )),
+                                  Expanded(
+                                      flex: 1,
+                                      child: IconButton(
+                                        icon: Icon(Icons.cancel,
+                                            color: Colors.white),
+                                        onPressed: () {},
+                                      )),
+                                ],
+                              ),
                             ],
                           ),
                         ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          )),
+              )),
           Column(
             children: [
               Padding(
