@@ -1,96 +1,98 @@
 import 'package:flutter/material.dart';
 
-class basketpage extends StatefulWidget {
-  State<basketpage> createState() => _basketpageState();
+class basketPage extends StatefulWidget {
+  State<basketPage> createState() => _basketPageState();
 }
 
 dynamic abo;
 
-class _basketpageState extends State<basketpage> {
+class _basketPageState extends State<basketPage> {
+  bool _isShow = true;
+  @override
   Widget build(BuildContext context) {
     abo = context;
-    return basketSayfasi();
-  }
-}
-
-Widget basketSayfasi() {
-  return Padding(
-    padding: const EdgeInsets.all(0),
-    child: ListView(
-      scrollDirection: Axis.vertical,
-      children: <Widget>[
-        Visibility(
-            visible: true,
-            child: Card(
-              color: Colors.redAccent,
-              child: Column(
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: Column(
-                      children: <Widget>[
-                        Wrap(
-                          children: [
-                            Row(
-                              children: [
-                                const Expanded(
-                                    flex: 9,
-                                    child: Text(
-                                      "Burada sepetine eklediklerini düzenleyebilir veya çıkarabilirsin. Sepete birden çok ekleme yapabilirsin ancak tek bir restoranttan sipariş verebilirsin!",
-                                      style: TextStyle(
-                                          color: Colors.white, fontSize: 17),
-                                    )),
-                                Expanded(
-                                    flex: 1,
-                                    child: IconButton(
-                                      icon: Icon(Icons.cancel,
-                                          color: Colors.white),
-                                      onPressed: () {},
-                                    )),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ],
+    return Padding(
+      padding: const EdgeInsets.all(0),
+      child: ListView(
+        scrollDirection: Axis.vertical,
+        children: <Widget>[
+          Visibility(
+              visible: _isShow,
+              child: Card(
+                color: Colors.redAccent,
+                child: Column(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Column(
+                        children: <Widget>[
+                          Wrap(
+                            children: [
+                              Row(
+                                children: [
+                                  const Expanded(
+                                      flex: 9,
+                                      child: Text(
+                                        "Burada sepetine eklediklerini düzenleyebilir veya çıkarabilirsin. Sepete birden çok ekleme yapabilirsin ancak tek bir restoranttan sipariş verebilirsin!",
+                                        style: TextStyle(
+                                            color: Colors.white, fontSize: 17),
+                                      )),
+                                  Expanded(
+                                      flex: 1,
+                                      child: IconButton(
+                                        icon: const Icon(Icons.cancel,
+                                            color: Colors.white),
+                                        onPressed: () {
+                                          setState(() {
+                                            _isShow = !_isShow;
+                                          });
+                                        },
+                                      )),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            )),
-        Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(5),
-              child: Column(children: [
-                sepetUrunleri("Elmas Pastanesi"),
-                sepetUrunleri("Bedesten Döner"),
-              ]),
-            ),
-          ],
-        ),
-        Padding(
-          padding: const EdgeInsets.only(right: 10, bottom: 20, top: 5),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-              SizedBox(
-                height: 30,
-                width: 150,
-                child: FloatingActionButton(
-                  backgroundColor: Colors.red,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5)),
-                  child: const Text("Sepeti Onayla",
-                      style: TextStyle(color: Colors.white, fontSize: 16)),
-                  onPressed: () {},
+                  ],
                 ),
+              )),
+          Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(5),
+                child: Column(children: [
+                  sepetUrunleri("Elmas Pastanesi"),
+                  sepetUrunleri("Bedesten Döner"),
+                ]),
               ),
             ],
           ),
-        ),
-      ],
-    ),
-  );
+          Padding(
+            padding: const EdgeInsets.only(right: 10, bottom: 20, top: 5),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                SizedBox(
+                  height: 30,
+                  width: 150,
+                  child: FloatingActionButton(
+                    backgroundColor: Colors.red,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5)),
+                    child: const Text("Sepeti Onayla",
+                        style: TextStyle(color: Colors.white, fontSize: 16)),
+                    onPressed: () {},
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }
 
 Widget sepetUrunleri(var restorantIsmi) {

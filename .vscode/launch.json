@@ -8,7 +8,7 @@
             "name": "yemekkapinda",
             "request": "launch",
             "type": "dart",
-            "program": "lib/homePage.dart"
+            "program": "lib/homePage.dart",
         },
         {
             "name": "yemekkapinda (profile mode)",

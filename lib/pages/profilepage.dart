@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-class profilepage extends StatefulWidget {
-  State<profilepage> createState() => _profilepageState();
+class profilePage extends StatefulWidget {
+  State<profilePage> createState() => _profilePageState();
 }
 
 dynamic abo;
 
-class _profilepageState extends State<profilepage> {
+class _profilePageState extends State<profilePage> {
   Widget build(BuildContext context) {
     return profilSayfasi();
   }

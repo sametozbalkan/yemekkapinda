@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:yemekkapinda/restaurantPage.dart';
 
-class mainpage extends StatefulWidget {
-  State<mainpage> createState() => _mainpageState();
+class mainPage extends StatefulWidget {
+  State<mainPage> createState() => _mainPageState();
 }
 
-class _mainpageState extends State<mainpage> {
+class _mainPageState extends State<mainPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: restorantSayfa(context),
@@ -15,7 +15,7 @@ class _mainpageState extends State<mainpage> {
 
 Widget restorantSayfa(context) {
   return Padding(
-    padding: const EdgeInsets.all(5),
+    padding: const EdgeInsets.fromLTRB(5, 5, 5, 0),
     child: ListView(
       scrollDirection: Axis.vertical,
       children: <Widget>[
