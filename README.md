@@ -1,16 +1,5 @@
-# yemekkapinda
+# Online Yemek Siparişi Uygulaması
 
-A new Flutter project.
+Henüz çok erken aşamada, Flutter kullanılarak yapılmış, örnek bir online yemek siparişi uygulaması.
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+![Ekran görüntüsü 2023-06-23 205258](https://github.com/oveRange/yemekkapinda/assets/100074864/7cd127a6-05b0-438d-9de4-33f6d8629a66)
