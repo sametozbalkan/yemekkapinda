@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:yemekkapinda/restaurantPage.dart';
 
+// ignore: camel_case_types
 class mainPage extends StatefulWidget {
+  const mainPage({super.key});
+
   @override
   State<mainPage> createState() => _mainPageState();
 }
@@ -57,6 +60,7 @@ final List<restorantDetay> myProducts = [
       etiketIsmi2: "Yerel Lezzet"),
 ];
 
+// ignore: camel_case_types
 class _mainPageState extends State<mainPage> {
   @override
   Widget build(BuildContext context) {
@@ -95,7 +99,7 @@ class _mainPageState extends State<mainPage> {
                       color: Colors.red,
                     ),
                     Text(
-                      " En Çok Tercih Edilen Restorantlar",
+                      "  En Çok Tercih Edilen Restorantlar",
                       style: TextStyle(
                           color: Colors.red,
                           fontWeight: FontWeight.bold,
@@ -145,20 +149,20 @@ class _mainPageState extends State<mainPage> {
     super.initState();
   }
 
-  void _runFilter(String enteredKeyword) {
-    List<restorantDetay> results = [];
-    if (enteredKeyword.isEmpty) {
-      results = myProducts;
+  void _runFilter(String arananKelime) {
+    List<restorantDetay> sonuc = [];
+    if (arananKelime.isEmpty) {
+      sonuc = myProducts;
     } else {
-      results = myProducts
+      sonuc = myProducts
           .where((user) => user.restorantIsmi
               .toLowerCase()
-              .contains(enteredKeyword.toLowerCase()))
+              .contains(arananKelime.toLowerCase()))
           .toList();
     }
 
     setState(() {
-      searchRestaurant = results;
+      searchRestaurant = sonuc;
     });
   }
 }
@@ -174,7 +178,7 @@ Widget restorantCard(yildizSayisi, restorantIsmi, tanimlama, resim, etiketIsmi,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
-          elevation: 5,
+          elevation: 3,
           child: FittedBox(
             fit: BoxFit.fill,
             child: Row(

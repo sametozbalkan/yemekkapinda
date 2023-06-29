@@ -12,14 +12,10 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Yemek Kapında',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
-        useMaterial3: true,
-      ),
-      home: const MyHomePage(title: 'Yemek Kapında'),
+      home: MyHomePage(title: 'Yemek Kapında'),
     );
   }
 }
@@ -33,9 +29,14 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _HomePageState();
 }
 
+int currentIndex = 0;
+
 class _HomePageState extends State<MyHomePage> {
-  int currentIndex = 0;
-  static final screens = [mainPage(), basketPage(), profilePage()];
+  static final screens = [
+    const mainPage(),
+    const basketPage(),
+    const profilePage()
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 
+// ignore: camel_case_types
 class basketPage extends StatefulWidget {
+  const basketPage({super.key});
+
+  @override
   State<basketPage> createState() => _basketPageState();
 }
 
 dynamic abo;
 
+// ignore: camel_case_types
 class _basketPageState extends State<basketPage> {
   bool _isShow = true;
   @override

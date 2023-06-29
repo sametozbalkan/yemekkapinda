@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
 
+// ignore: camel_case_types
 class profilePage extends StatefulWidget {
+  const profilePage({super.key});
+
+  @override
   State<profilePage> createState() => _profilePageState();
 }
 
 dynamic abo;
 
+// ignore: camel_case_types
 class _profilePageState extends State<profilePage> {
+  @override
   Widget build(BuildContext context) {
     return profilSayfasi();
   }
@@ -62,7 +68,7 @@ Widget profilSayfasi() {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           const Expanded(
-                            flex: 7,
+                            flex: 19,
                             child: Text(
                               "Profilim",
                               style: TextStyle(
@@ -72,7 +78,7 @@ Widget profilSayfasi() {
                             ),
                           ),
                           Expanded(
-                              flex: 3,
+                              flex: 6,
                               child: Row(
                                 children: [
                                   TextButton(
@@ -186,26 +192,29 @@ Widget profilSayfasi() {
             ],
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.all(0),
-          child: Column(children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(5),
-                  child: TextButton(
-                      style: TextButton.styleFrom(
-                        backgroundColor: Colors.red,
-                      ),
-                      onPressed: () {},
-                      child: const Text("Hesabı Güncelle",
-                          style: TextStyle(color: Colors.white))),
-                )
-              ],
-            )
-          ]),
-        )
+        Column(children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 10, 15, 5),
+                child: GestureDetector(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.red,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    width: 120,
+                    height: 35,
+                    child: const Center(
+                        child: Text("Hesabı Güncelle",
+                            style: TextStyle(color: Colors.white))),
+                  ),
+                ),
+              )
+            ],
+          )
+        ]),
       ],
     ),
   );

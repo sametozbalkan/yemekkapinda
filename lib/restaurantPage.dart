@@ -45,7 +45,7 @@ Widget urunKartlari(urunIsmi, urunFiyati, context) {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => InfoPage()),
+          MaterialPageRoute(builder: (context) => const InfoPage()),
         );
       },
       child: SizedBox(
