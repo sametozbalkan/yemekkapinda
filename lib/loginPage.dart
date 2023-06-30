@@ -43,6 +43,7 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
+  FocusNode myFocusNode = FocusNode();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,10 +66,17 @@ class _LoginPageState extends State<LoginPage> {
                   padding: const EdgeInsets.symmetric(horizontal: 15),
                   child: TextField(
                     controller: mailController,
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
+                    decoration: InputDecoration(
+                        focusedBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.red),
+                        ),
+                        border: const OutlineInputBorder(),
                         labelText: 'E-mail',
-                        hintText: 'Geçerli bir e-mail yazın'),
+                        labelStyle: TextStyle(
+                            color: myFocusNode.hasFocus
+                                ? Colors.red
+                                : const Color.fromARGB(255, 119, 119, 119)),
+                        hintText: 'Geçerli bir e-mail girin'),
                   ),
                 ),
                 Padding(
@@ -77,9 +85,16 @@ class _LoginPageState extends State<LoginPage> {
                   child: TextField(
                     controller: sifreController,
                     obscureText: true,
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
+                    decoration: InputDecoration(
+                        focusedBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.red),
+                        ),
+                        border: const OutlineInputBorder(),
                         labelText: 'Şifre',
+                        labelStyle: TextStyle(
+                            color: myFocusNode.hasFocus
+                                ? Colors.red
+                                : const Color.fromARGB(255, 119, 119, 119)),
                         hintText: 'Şifre girin'),
                   ),
                 ),
@@ -145,6 +160,8 @@ class _LoginPageState extends State<LoginPage> {
                         )),
                   ],
                 ),
+                const SizedBox(height: 100),
+                const Text("use admin 123")
               ],
             ),
           ),

@@ -15,6 +15,7 @@ class InfoPage extends StatefulWidget {
 }
 
 class _InfoPageState extends State<InfoPage> {
+  final yourScrollController = ScrollController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,11 +62,14 @@ class _InfoPageState extends State<InfoPage> {
                                   color: Colors.white,
                                 ),
                                 onPressed: () {
+                                  setState(() {
+                                    currentIndex = 1;
+                                  });
                                   Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => const HomePage()),
-                                  );
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const HomePage()));
                                 },
                               ),
                             ],
@@ -199,7 +203,7 @@ class _InfoPageState extends State<InfoPage> {
                     ],
                   ),
                   const SizedBox(
-                    height: 40,
+                    height: 80,
                   ),
                   const Row(
                     children: <Widget>[
@@ -211,10 +215,81 @@ class _InfoPageState extends State<InfoPage> {
                         ),
                       ),
                     ],
-                  )
+                  ),
                 ],
               ),
             ),
+            SizedBox(
+              width: MediaQuery.of(context).size.width,
+              height: 210,
+              child: Scrollbar(
+                thumbVisibility: true,
+                thickness: 5,
+                controller: yourScrollController,
+                child: ListView.separated(
+                  controller: yourScrollController,
+                  scrollDirection: Axis.horizontal,
+                  padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+                  itemCount: 5,
+                  itemBuilder: (context, index) {
+                    return SizedBox(
+                      width: 200,
+                      height: 200,
+                      child: Card(
+                        child: Column(
+                          children: [
+                            Expanded(
+                                flex: 7,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Image.asset(
+                                      "assets/cake.jpg",
+                                      fit: BoxFit.fill,
+                                      width: 192,
+                                    ),
+                                  ],
+                                )),
+                            const Expanded(
+                                flex: 3,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsets.fromLTRB(10, 5, 0, 5),
+                                      child: Row(
+                                        children: [
+                                          Text(
+                                            "Kakaolu Kek",
+                                            style: TextStyle(
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.bold),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding:
+                                          EdgeInsets.only(left: 10, bottom: 5),
+                                      child: Row(
+                                        children: [Text("31 TL")],
+                                      ),
+                                    ),
+                                  ],
+                                )),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                  separatorBuilder: (BuildContext context, int index) {
+                    return const SizedBox(
+                      width: 10,
+                    );
+                  },
+                ),
+              ),
+            )
           ],
         ),
       ),

@@ -23,6 +23,25 @@ final List<restorantUrunleri> sepetDurumu = [
   restorantUrunleri(urunIsmi: "Dalga", urunFiyati: "34 TL"),
 ];
 
+// ignore: camel_case_types
+class restorantTanimi {
+  String restorantBackground, restorantIsmi, restorantTanim;
+  restorantTanimi(
+      {required this.restorantBackground,
+      required this.restorantIsmi,
+      required this.restorantTanim});
+}
+
+final List<restorantTanimi> restorantList = [
+  restorantTanimi(
+      restorantBackground: "cake",
+      restorantIsmi: "Elmas Pastanesi",
+      restorantTanim:
+          "Yılların değişmez lezzeti ve şehrinizde en çok tercih edilen pastane!")
+];
+var index = 0;
+var a = restorantList[index].restorantBackground;
+
 class _RestaurantPageState extends State<RestaurantPage> {
   @override
   Widget build(BuildContext context) {
@@ -32,11 +51,88 @@ class _RestaurantPageState extends State<RestaurantPage> {
         children: [
           Padding(
             padding: const EdgeInsets.all(0),
-            child: restorantTanimi(
-                "cake",
-                "Elmas Pastanesi",
-                "Yılların değişmez lezzeti ve şehrinizde en çok tercih edilen pastane!",
-                context),
+            child: ListView(
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              children: <Widget>[
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  height: 220,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage("assets/$a.jpg"),
+                        fit: BoxFit.cover,
+                        opacity: 0.7),
+                    borderRadius: const BorderRadius.vertical(
+                      bottom: Radius.circular(5),
+                    ),
+                    gradient: const LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment(0.2, 0.0),
+                      colors: [
+                        Colors.redAccent,
+                        Colors.redAccent,
+                      ],
+                      tileMode: TileMode.repeated,
+                    ),
+                  ),
+                  child: Column(
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.only(top: 15),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Row(
+                              children: [
+                                Expanded(
+                                  flex: 9,
+                                  child: Text(
+                                    restorantList[index].restorantIsmi,
+                                    style: const TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 40),
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 1,
+                                  child: IconButton(
+                                    icon: const Icon(
+                                      Icons.shopping_basket,
+                                      color: Colors.white,
+                                    ),
+                                    onPressed: () {
+                                      setState(() {
+                                        currentIndex = 1;
+                                      });
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const HomePage()));
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 80,
+                            ),
+                            Text(
+                              restorantList[index].restorantTanim,
+                              style: const TextStyle(
+                                  color: Colors.white, fontSize: 20),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
           const Padding(
             padding: EdgeInsets.all(15),
@@ -103,86 +199,4 @@ class _RestaurantPageState extends State<RestaurantPage> {
       ),
     );
   }
-}
-
-Widget restorantTanimi(
-    restorantBackground, restorantIsmi, restorantTanim, context) {
-  return ListView(
-    scrollDirection: Axis.vertical,
-    shrinkWrap: true,
-    children: <Widget>[
-      Container(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        height: 220,
-        width: double.infinity,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage("assets/$restorantBackground.jpg"),
-              fit: BoxFit.cover,
-              opacity: 0.7),
-          borderRadius: const BorderRadius.vertical(
-            bottom: Radius.circular(5),
-          ),
-          gradient: const LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment(0.2, 0.0),
-            colors: [
-              Colors.redAccent,
-              Colors.redAccent,
-            ],
-            tileMode: TileMode.repeated,
-          ),
-        ),
-        child: Column(
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(top: 15),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Row(
-                    children: [
-                      Expanded(
-                        flex: 9,
-                        child: Text(
-                          "$restorantIsmi",
-                          style: const TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 40),
-                        ),
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: IconButton(
-                          icon: const Icon(
-                            Icons.shopping_basket,
-                            color: Colors.white,
-                          ),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const HomePage()),
-                            );
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 80,
-                  ),
-                  Text(
-                    "$restorantTanim",
-                    style: const TextStyle(color: Colors.white, fontSize: 20),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    ],
-  );
 }

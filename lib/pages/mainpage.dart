@@ -61,6 +61,7 @@ final List<restorantDetay> myProducts = [
 ];
 
 bool _isShow = true;
+FocusNode myFocusNode = FocusNode();
 
 // ignore: camel_case_types
 class _mainPageState extends State<mainPage> {
@@ -72,15 +73,20 @@ class _mainPageState extends State<mainPage> {
           toolbarHeight: 70,
           backgroundColor: Colors.white,
           title: TextField(
-            decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: "Yakınındaki restorantları ara",
-                suffixIcon: Icon(Icons.search),
-                suffixIconColor: Colors.red,
-                fillColor: Colors.red,
-                labelStyle: TextStyle(
-                  color: Colors.red,
-                )),
+            decoration: InputDecoration(
+              focusedBorder: const OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.red),
+              ),
+              border: const OutlineInputBorder(),
+              labelText: "Yakınındaki restorantları ara",
+              suffixIcon: const Icon(Icons.search),
+              suffixIconColor: Colors.red,
+              fillColor: Colors.red,
+              labelStyle: TextStyle(
+                  color: myFocusNode.hasFocus
+                      ? Colors.red
+                      : const Color.fromARGB(255, 119, 119, 119)),
+            ),
             onChanged: (value) => filtreliSonuclar(value),
           ),
           centerTitle: true,
