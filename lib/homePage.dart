@@ -41,6 +41,7 @@ class _HomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 1,
         leading: IconButton(
           icon: const Icon(
             Icons.app_registration_rounded,
@@ -85,13 +86,13 @@ class _HomePageState extends State<MyHomePage> {
           backgroundColor: Colors.red,
           selectedItemColor: Colors.white,
           unselectedItemColor: Colors.white30,
-          unselectedFontSize: 0.0,
-          selectedFontSize: 0.0,
+          unselectedFontSize: 10.0,
+          selectedFontSize: 12.0,
           showUnselectedLabels: true,
           items: const [
             BottomNavigationBarItem(
                 label: "Restorantlar",
-                icon: Icon(Icons.home),
+                icon: Icon(Icons.restaurant),
                 tooltip: "Restorantlar"),
             BottomNavigationBarItem(
               label: "Sepet",

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:yemekkapinda/restaurantPage.dart';
 import 'homePage.dart';
+import 'package:yemekkapinda/pages/basketPage.dart';
 
 int quantity = 1;
 double total = 25;
@@ -9,10 +11,10 @@ class InfoPage extends StatefulWidget {
 
   @override
   // ignore: library_private_types_in_public_api
-  _InforPageState createState() => _InforPageState();
+  _InfoPageState createState() => _InfoPageState();
 }
 
-class _InforPageState extends State<InfoPage> {
+class _InfoPageState extends State<InfoPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -183,6 +185,13 @@ class _InforPageState extends State<InfoPage> {
                               style:
                                   TextStyle(color: Colors.white, fontSize: 22)),
                           onPressed: () {
+                            setState(() {
+                              for (var i = 0; i < quantity; i++) {
+                                eklenenList.add(restorantUrunleri(
+                                    urunIsmi: "aynen", urunFiyati: "31"));
+                              }
+                              restorantIsmi = restorantIsmiInfo;
+                            });
                             _showMyDialog(context);
                           },
                         ),
@@ -227,33 +236,45 @@ class _InforPageState extends State<InfoPage> {
       }
     });
   }
-}
 
-Future<void> _showMyDialog(context) async {
-  return showDialog<void>(
-    context: context,
-    barrierDismissible: false, // user must tap button!
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: const Text('Başarılı'),
-        content: const SingleChildScrollView(
-          child: ListBody(
-            children: <Widget>[
-              Text('Sepete eklendi!'),
-            ],
+  Future<void> _showMyDialog(context) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Başarılı'),
+          content: const SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('Sepete eklendi!'),
+              ],
+            ),
           ),
-        ),
-        actions: <Widget>[
-          TextButton(
-            child: const Text('Tamam'),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-        ],
-      );
-    },
-  );
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Sepete git'),
+              onPressed: () {
+                setState(() {
+                  currentIndex = 1;
+                });
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const HomePage()),
+                );
+              },
+            ),
+            TextButton(
+              child: const Text('Kapat'),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            )
+          ],
+        );
+      },
+    );
+  }
 }
 
 class MyClipper extends CustomClipper<Path> {
@@ -274,6 +295,8 @@ class MyClipper extends CustomClipper<Path> {
   }
 }
 
+var restorantIsmiInfo = "Elmas Pastanesi";
+
 Widget itemCake() {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
@@ -281,9 +304,9 @@ Widget itemCake() {
       const SizedBox(
         height: 15,
       ),
-      const Text(
-        "Elmas Pastanesi",
-        style: TextStyle(
+      Text(
+        restorantIsmiInfo,
+        style: const TextStyle(
             fontWeight: FontWeight.normal, fontSize: 15, color: Colors.white),
       ),
       const SizedBox(

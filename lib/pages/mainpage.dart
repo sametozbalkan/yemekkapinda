@@ -60,86 +60,117 @@ final List<restorantDetay> myProducts = [
       etiketIsmi2: "Yerel Lezzet"),
 ];
 
+bool _isShow = true;
+
 // ignore: camel_case_types
 class _mainPageState extends State<mainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: ListView(
-      children: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(15, 5, 15, 5),
-          child: TextField(
+        appBar: AppBar(
+          elevation: 1,
+          toolbarHeight: 70,
+          backgroundColor: Colors.white,
+          title: TextField(
             decoration: const InputDecoration(
-                labelText: "Restorant ara",
+                border: OutlineInputBorder(),
+                labelText: "Yakınındaki restorantları ara",
                 suffixIcon: Icon(Icons.search),
                 suffixIconColor: Colors.red,
                 fillColor: Colors.red,
                 labelStyle: TextStyle(
                   color: Colors.red,
                 )),
-            onChanged: (value) => _runFilter(value),
+            onChanged: (value) => filtreliSonuclar(value),
           ),
+          centerTitle: true,
         ),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
-          child: ListView(
-            scrollDirection: Axis.vertical,
-            shrinkWrap: true,
-            children: <Widget>[
-              const Padding(
-                padding: EdgeInsets.all(10),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Icon(
-                      Icons.restaurant,
-                      size: 24,
-                      color: Colors.red,
-                    ),
-                    Text(
-                      "  En Çok Tercih Edilen Restorantlar",
-                      style: TextStyle(
-                          color: Colors.red,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 22),
-                    ),
-                  ],
-                ),
+        body: ListView(
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(5, 5, 5, 0),
+              child: ListView(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                children: <Widget>[
+                  Visibility(
+                      visible: _isShow,
+                      child: const Padding(
+                        padding: EdgeInsets.all(10),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Icon(
+                              Icons.restaurant,
+                              size: 28,
+                              color: Colors.red,
+                            ),
+                            Text(
+                              "  En Çok Tercih Edilen Restorantlar",
+                              style: TextStyle(
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 22),
+                            ),
+                          ],
+                        ),
+                      )),
+                  Visibility(
+                      visible: !_isShow,
+                      child: const Padding(
+                        padding: EdgeInsets.all(10),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Icon(
+                              Icons.search,
+                              size: 28,
+                              color: Colors.red,
+                            ),
+                            Text(
+                              " Arama Sonuçları",
+                              style: TextStyle(
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 22),
+                            ),
+                          ],
+                        ),
+                      )),
+                  GridView.builder(
+                      shrinkWrap: true,
+                      gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                          maxCrossAxisExtent: MediaQuery.of(context).size.width,
+                          childAspectRatio: 4.5 / 2),
+                      itemCount: searchRestaurant.length,
+                      itemBuilder: (BuildContext ctx, index) {
+                        return GridTile(
+                          child: GestureDetector(
+                            child: restorantCard(
+                                searchRestaurant[index].yildizSayisi,
+                                searchRestaurant[index].restorantIsmi,
+                                searchRestaurant[index].tanimlama,
+                                searchRestaurant[index].resim,
+                                searchRestaurant[index].etiketIsmi,
+                                searchRestaurant[index].etiketIsmi2,
+                                context),
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const RestaurantPage()));
+                            },
+                          ),
+                        );
+                      }),
+                ],
               ),
-              GridView.builder(
-                  shrinkWrap: true,
-                  gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                      maxCrossAxisExtent: MediaQuery.of(context).size.width,
-                      childAspectRatio: 4.5 / 2),
-                  itemCount: searchRestaurant.length,
-                  itemBuilder: (BuildContext ctx, index) {
-                    return GridTile(
-                      child: GestureDetector(
-                        child: restorantCard(
-                            searchRestaurant[index].yildizSayisi,
-                            searchRestaurant[index].restorantIsmi,
-                            searchRestaurant[index].tanimlama,
-                            searchRestaurant[index].resim,
-                            searchRestaurant[index].etiketIsmi,
-                            searchRestaurant[index].etiketIsmi2,
-                            context),
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      const RestaurantPage()));
-                        },
-                      ),
-                    );
-                  }),
-            ],
-          ),
-        ),
-      ],
-    ));
+            ),
+          ],
+        ));
   }
 
   List<restorantDetay> searchRestaurant = [];
@@ -149,9 +180,10 @@ class _mainPageState extends State<mainPage> {
     super.initState();
   }
 
-  void _runFilter(String arananKelime) {
+  void filtreliSonuclar(String arananKelime) {
     List<restorantDetay> sonuc = [];
     if (arananKelime.isEmpty) {
+      _isShow = true;
       sonuc = myProducts;
     } else {
       sonuc = myProducts
@@ -159,6 +191,7 @@ class _mainPageState extends State<mainPage> {
               .toLowerCase()
               .contains(arananKelime.toLowerCase()))
           .toList();
+      _isShow = false;
     }
 
     setState(() {
@@ -193,7 +226,7 @@ Widget restorantCard(yildizSayisi, restorantIsmi, tanimlama, resim, etiketIsmi,
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 3),
                       child: Text(
-                        " $restorantIsmi ",
+                        "$restorantIsmi",
                         style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 15,
@@ -258,7 +291,7 @@ Widget restorantCard(yildizSayisi, restorantIsmi, tanimlama, resim, etiketIsmi,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
                         const Text(
-                          "Puan",
+                          "Puan ",
                           style: TextStyle(
                               fontWeight: FontWeight.normal,
                               fontSize: 7,
@@ -289,7 +322,7 @@ Widget restorantCard(yildizSayisi, restorantIsmi, tanimlama, resim, etiketIsmi,
                           ),
                         ],
                         Text(
-                          " $yildizSayisi",
+                          "$yildizSayisi",
                           style: const TextStyle(
                               fontWeight: FontWeight.normal,
                               fontSize: 7,
