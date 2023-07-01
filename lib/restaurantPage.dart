@@ -25,22 +25,21 @@ final List<restorantUrunleri> sepetDurumu = [
 
 // ignore: camel_case_types
 class restorantTanimi {
-  String restorantBackground, restorantIsmi, restorantTanim;
+  String restorantBackground, restorantIsmiRP, restorantTanim;
   restorantTanimi(
       {required this.restorantBackground,
-      required this.restorantIsmi,
+      required this.restorantIsmiRP,
       required this.restorantTanim});
 }
 
 final List<restorantTanimi> restorantList = [
   restorantTanimi(
       restorantBackground: "cake",
-      restorantIsmi: "Elmas Pastanesi",
+      restorantIsmiRP: "Elmas Pastanesi",
       restorantTanim:
           "Yılların değişmez lezzeti ve şehrinizde en çok tercih edilen pastane!")
 ];
-var index = 0;
-var a = restorantList[index].restorantBackground;
+var a = restorantList[0].restorantBackground;
 
 class _RestaurantPageState extends State<RestaurantPage> {
   @override
@@ -89,7 +88,7 @@ class _RestaurantPageState extends State<RestaurantPage> {
                                 Expanded(
                                   flex: 9,
                                   child: Text(
-                                    restorantList[index].restorantIsmi,
+                                    restorantList[0].restorantIsmiRP,
                                     style: const TextStyle(
                                         color: Colors.white,
                                         fontWeight: FontWeight.bold,
@@ -121,7 +120,7 @@ class _RestaurantPageState extends State<RestaurantPage> {
                               height: 80,
                             ),
                             Text(
-                              restorantList[index].restorantTanim,
+                              restorantList[0].restorantTanim,
                               style: const TextStyle(
                                   color: Colors.white, fontSize: 20),
                             ),

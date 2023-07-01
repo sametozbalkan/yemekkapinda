@@ -10,6 +10,23 @@ class profilePage extends StatefulWidget {
   State<profilePage> createState() => _profilePageState();
 }
 
+class profilBilgileri {
+  String ad, soyad, email, adres;
+  profilBilgileri(
+      {required this.ad,
+      required this.soyad,
+      required this.email,
+      required this.adres});
+}
+
+List<profilBilgileri> profilKayitlari = [
+  profilBilgileri(
+      ad: "Erce",
+      soyad: "Kayapınar",
+      email: "ercekayapinar@hotmail.com",
+      adres: "Yıldırım Beyazıt, Çeşme Karşısı Sk., 22020 Edirne Merkez/Edirne")
+];
+
 dynamic abo;
 
 // ignore: camel_case_types
@@ -24,7 +41,7 @@ class _profilePageState extends State<profilePage> {
               ClipPath(
                 clipper: ProfileClipper(),
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  padding: const EdgeInsets.fromLTRB(20, 0, 10, 0),
                   height: 300,
                   width: double.infinity,
                   decoration: const BoxDecoration(
@@ -177,77 +194,95 @@ class _profilePageState extends State<profilePage> {
             ],
           ),
           Padding(
-            padding: const EdgeInsets.only(left: 10, right: 10, bottom: 5),
-            child: Column(
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(left: 5, right: 5),
-                  child: TextFormField(
-                    initialValue: 'Mustafa Erce',
-                    maxLength: 30,
-                    decoration: const InputDecoration(
-                      labelText: 'Ad',
-                      labelStyle: TextStyle(
-                        color: Colors.red,
-                      ),
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.red),
-                      ),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 5, right: 5, bottom: 5),
-                  child: TextFormField(
-                    initialValue: 'Kayapınar',
-                    maxLength: 30,
-                    decoration: const InputDecoration(
-                      labelText: 'Soyad',
-                      labelStyle: TextStyle(
-                        color: Colors.red,
-                      ),
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.red),
+              padding: const EdgeInsets.only(left: 10, right: 10, top: 20),
+              child: Card(
+                elevation: 0,
+                shape: BeveledRectangleBorder(
+                    borderRadius: BorderRadius.circular(5),
+                    side: const BorderSide(width: 0.1, color: Colors.black)),
+                child: Column(
+                  children: <Widget>[
+                    const Padding(
+                      padding: EdgeInsets.fromLTRB(0, 20, 0, 10),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text("Kişisel Bilgiler",
+                              style: TextStyle(
+                                fontSize: 24,
+                                color: Colors.red,
+                                fontWeight: FontWeight.bold,
+                              ))
+                        ],
                       ),
                     ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 5, right: 5, bottom: 5),
-                  child: TextFormField(
-                    initialValue: 'ercekayapinar@hotmail.com',
-                    maxLength: 50,
-                    decoration: const InputDecoration(
-                      labelText: 'E-mail',
-                      labelStyle: TextStyle(
-                        color: Colors.red,
-                      ),
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.red),
-                      ),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 5, right: 5, bottom: 5),
-                  child: TextFormField(
-                    initialValue:
-                        "Yıldırım Beyazıt Mah, Çeşme Karşısı Sk, No: 22, Merkez/Edirne",
-                    maxLength: 100,
-                    decoration: const InputDecoration(
-                      labelText: 'Adres',
-                      labelStyle: TextStyle(
-                        color: Colors.red,
-                      ),
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.red),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          left: 10, right: 10, bottom: 15),
+                      child: TextFormField(
+                        initialValue: 'Mustafa Erce',
+                        decoration: const InputDecoration(
+                          labelText: 'Ad',
+                          labelStyle: TextStyle(
+                            color: Colors.red,
+                          ),
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.red),
+                          ),
+                        ),
                       ),
                     ),
-                  ),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          left: 10, right: 10, bottom: 15),
+                      child: TextFormField(
+                        initialValue: 'Kayapınar',
+                        decoration: const InputDecoration(
+                          labelText: 'Soyad',
+                          labelStyle: TextStyle(
+                            color: Colors.red,
+                          ),
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.red),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          left: 10, right: 10, bottom: 15),
+                      child: TextFormField(
+                        initialValue: 'ercekayapinar@hotmail.com',
+                        decoration: const InputDecoration(
+                          labelText: 'E-mail',
+                          labelStyle: TextStyle(
+                            color: Colors.red,
+                          ),
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.red),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          left: 10, right: 10, bottom: 15),
+                      child: TextFormField(
+                        initialValue: profilKayitlari[0].adres,
+                        decoration: const InputDecoration(
+                          labelText: 'Adres',
+                          labelStyle: TextStyle(
+                            color: Colors.red,
+                          ),
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.red),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          ),
+              )),
           Column(children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.end,

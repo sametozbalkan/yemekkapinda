@@ -236,6 +236,9 @@ class _InfoPageState extends State<InfoPage> {
                       width: 200,
                       height: 200,
                       child: Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
                         child: Column(
                           children: [
                             Expanded(
@@ -243,11 +246,14 @@ class _InfoPageState extends State<InfoPage> {
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Image.asset(
-                                      "assets/cake.jpg",
-                                      fit: BoxFit.fill,
-                                      width: 192,
-                                    ),
+                                    ClipRRect(
+                                        borderRadius:
+                                            BorderRadius.circular(8.0),
+                                        child: Image.asset(
+                                          "assets/cake.jpg",
+                                          fit: BoxFit.fill,
+                                          width: 192,
+                                        )),
                                   ],
                                 )),
                             const Expanded(
