@@ -12,15 +12,16 @@ class RestaurantPage extends StatefulWidget {
 
 // ignore: camel_case_types
 class restorantUrunleri {
-  String urunIsmi, urunFiyati;
+  String urunIsmi;
+  int urunFiyati;
   restorantUrunleri({required this.urunIsmi, required this.urunFiyati});
 }
 
 final List<restorantUrunleri> sepetDurumu = [
-  restorantUrunleri(urunIsmi: "Dalga", urunFiyati: "31 TL"),
-  restorantUrunleri(urunIsmi: "Dalga", urunFiyati: "32 TL"),
-  restorantUrunleri(urunIsmi: "Dalga", urunFiyati: "33 TL"),
-  restorantUrunleri(urunIsmi: "Dalga", urunFiyati: "34 TL"),
+  restorantUrunleri(urunIsmi: "Dalga", urunFiyati: 31),
+  restorantUrunleri(urunIsmi: "Dalga", urunFiyati: 32),
+  restorantUrunleri(urunIsmi: "Dalga", urunFiyati: 33),
+  restorantUrunleri(urunIsmi: "Dalga", urunFiyati: 34),
 ];
 
 // ignore: camel_case_types
@@ -154,9 +155,15 @@ class _RestaurantPageState extends State<RestaurantPage> {
                   crossAxisCount: 2, childAspectRatio: 3.3),
               itemCount: sepetDurumu.length,
               itemBuilder: (BuildContext ctx, index) {
+                var isim = sepetDurumu[index].urunFiyati;
                 return GridTile(
                     child: GestureDetector(
                         onTap: () {
+                          restorantIsmiInfo = restorantList[0].restorantIsmiRP;
+                          urunSayfasi[0].urunAdi = sepetDurumu[index].urunIsmi;
+                          urunSayfasi[0].urunFiyati =
+                              sepetDurumu[index].urunFiyati;
+                          total = sepetDurumu[index].urunFiyati;
                           Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -178,7 +185,7 @@ class _RestaurantPageState extends State<RestaurantPage> {
                                       fontSize: 22, color: Colors.red),
                                 ),
                                 subtitle: Text(
-                                  sepetDurumu[index].urunFiyati,
+                                  "$isim TL",
                                   style: const TextStyle(
                                       fontSize: 13, color: Colors.black),
                                 ),

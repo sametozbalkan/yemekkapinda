@@ -27,8 +27,6 @@ List<profilBilgileri> profilKayitlari = [
       adres: "Yıldırım Beyazıt, Çeşme Karşısı Sk., 22020 Edirne Merkez/Edirne")
 ];
 
-dynamic abo;
-
 // ignore: camel_case_types
 class _profilePageState extends State<profilePage> {
   @override

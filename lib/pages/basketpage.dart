@@ -10,61 +10,15 @@ class basketPage extends StatefulWidget {
   State<basketPage> createState() => _basketPageState();
 }
 
-dynamic abo;
-
 final List<restorantUrunleri> eklenenList = [];
 
 // ignore: camel_case_types
 class _basketPageState extends State<basketPage> {
-  bool _isShow = true;
   @override
   Widget build(BuildContext context) {
-    abo = context;
     return Padding(
       padding: const EdgeInsets.all(0),
       child: ListView(scrollDirection: Axis.vertical, children: <Widget>[
-        Visibility(
-            visible: _isShow,
-            child: Card(
-              color: Colors.redAccent,
-              child: Column(
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: Column(
-                      children: <Widget>[
-                        Wrap(
-                          children: [
-                            Row(
-                              children: [
-                                const Expanded(
-                                    flex: 9,
-                                    child: Text(
-                                      "Burada sepetine eklediklerini düzenleyebilir veya çıkarabilirsin. Sepete birden çok ekleme yapabilirsin ancak tek bir restoranttan sipariş verebilirsin!",
-                                      style: TextStyle(
-                                          color: Colors.white, fontSize: 17),
-                                    )),
-                                Expanded(
-                                    flex: 1,
-                                    child: IconButton(
-                                      icon: const Icon(Icons.cancel,
-                                          color: Colors.white),
-                                      onPressed: () {
-                                        setState(() {
-                                          _isShow = !_isShow;
-                                        });
-                                      },
-                                    )),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            )),
         eklenenList.isNotEmpty
             ? ListView(shrinkWrap: true, children: [
                 Card(
@@ -102,6 +56,7 @@ class _basketPageState extends State<basketPage> {
                                 crossAxisCount: 1, childAspectRatio: 6.5),
                         itemCount: eklenenList.length,
                         itemBuilder: (BuildContext ctx, index) {
+                          var adamke = eklenenList[index].urunFiyati;
                           return GridTile(
                               child: GestureDetector(
                                   onTap: () {
@@ -131,7 +86,7 @@ class _basketPageState extends State<basketPage> {
                                                 color: Colors.red),
                                           ),
                                           subtitle: Text(
-                                            eklenenList[index].urunFiyati,
+                                            "$adamke",
                                             style: const TextStyle(
                                                 fontSize: 13,
                                                 color: Colors.black),
@@ -146,8 +101,16 @@ class _basketPageState extends State<basketPage> {
                                                   ),
                                                   onPressed: () {
                                                     setState(() {
-                                                      eklenenList
-                                                          .removeAt(index);
+                                                      eklenenList.add(
+                                                          restorantUrunleri(
+                                                              urunIsmi:
+                                                                  eklenenList[
+                                                                          index]
+                                                                      .urunIsmi,
+                                                              urunFiyati:
+                                                                  eklenenList[
+                                                                          index]
+                                                                      .urunFiyati));
                                                     });
                                                   },
                                                 ),
@@ -172,34 +135,13 @@ class _basketPageState extends State<basketPage> {
                         }),
                   ]),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 10, bottom: 20, top: 5),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                      SizedBox(
-                        height: 30,
-                        width: 150,
-                        child: FloatingActionButton(
-                          backgroundColor: Colors.red,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5)),
-                          child: const Text("Sepeti Onayla",
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 16)),
-                          onPressed: () {},
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
               ])
             : Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   SizedBox(
                     width: double.infinity,
-                    height: MediaQuery.of(context).size.height - 220,
+                    height: MediaQuery.of(context).size.height - 120,
                     child: const Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -220,7 +162,27 @@ class _basketPageState extends State<basketPage> {
                     ),
                   ),
                 ],
-              )
+              ),
+        Padding(
+          padding: const EdgeInsets.only(right: 10, bottom: 20, top: 5),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: <Widget>[
+              SizedBox(
+                height: 30,
+                width: 150,
+                child: FloatingActionButton(
+                  backgroundColor: Colors.red,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5)),
+                  child: const Text("Sepeti Onayla",
+                      style: TextStyle(color: Colors.white, fontSize: 16)),
+                  onPressed: () {},
+                ),
+              ),
+            ],
+          ),
+        ),
       ]),
     );
   }

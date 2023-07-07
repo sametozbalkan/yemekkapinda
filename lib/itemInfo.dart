@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:yemekkapinda/pages/mainPage.dart';
 import 'package:yemekkapinda/restaurantPage.dart';
 import 'homePage.dart';
 import 'package:yemekkapinda/pages/basketPage.dart';
 
 int quantity = 1;
-double total = 25;
+int total = 0;
+String restorantIsmiInfo = "";
 
 class InfoPage extends StatefulWidget {
   const InfoPage({super.key});
@@ -13,6 +15,16 @@ class InfoPage extends StatefulWidget {
   // ignore: library_private_types_in_public_api
   _InfoPageState createState() => _InfoPageState();
 }
+
+class urunBilgileri {
+  String urunAdi;
+  int urunFiyati;
+  urunBilgileri({required this.urunAdi, required this.urunFiyati});
+}
+
+List<urunBilgileri> urunSayfasi = [
+  urunBilgileri(urunAdi: "urunAdi", urunFiyati: 0)
+];
 
 class _InfoPageState extends State<InfoPage> {
   final yourScrollController = ScrollController();
@@ -49,9 +61,9 @@ class _InfoPageState extends State<InfoPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
-                              const Text(
-                                "Kakaolu Kek",
-                                style: TextStyle(
+                              Text(
+                                urunSayfasi[0].urunAdi,
+                                style: const TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold,
                                     fontSize: 36),
@@ -190,13 +202,19 @@ class _InfoPageState extends State<InfoPage> {
                                   TextStyle(color: Colors.white, fontSize: 22)),
                           onPressed: () {
                             setState(() {
-                              for (var i = 0; i < quantity; i++) {
-                                eklenenList.add(restorantUrunleri(
-                                    urunIsmi: "aynen", urunFiyati: "31"));
+                              if (eklenenList.isEmpty |
+                                  restorantIsmi.contains(restorantIsmiInfo)) {
+                                for (var i = 0; i < quantity; i++) {
+                                  eklenenList.add(restorantUrunleri(
+                                      urunIsmi: urunSayfasi[0].urunAdi,
+                                      urunFiyati: urunSayfasi[0].urunFiyati));
+                                }
+                                restorantIsmi = restorantIsmiInfo;
+                                _showMyDialog(context);
+                              } else {
+                                _showMyDialog2(context);
                               }
-                              restorantIsmi = restorantIsmiInfo;
                             });
-                            _showMyDialog(context);
                           },
                         ),
                       ),
@@ -305,7 +323,7 @@ class _InfoPageState extends State<InfoPage> {
   void add() {
     setState(() {
       quantity = quantity + 1;
-      total = 25.0 * quantity;
+      total = urunSayfasi[0].urunFiyati * quantity;
     });
   }
 
@@ -313,7 +331,7 @@ class _InfoPageState extends State<InfoPage> {
     setState(() {
       if (quantity > 1) {
         quantity = quantity - 1;
-        total = 25.0 * quantity;
+        total = urunSayfasi[0].urunFiyati * quantity;
       }
     });
   }
@@ -356,6 +374,62 @@ class _InfoPageState extends State<InfoPage> {
       },
     );
   }
+
+  Future<void> _showMyDialog2(context) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Hata'),
+          content: const SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text(
+                    'Sepette başka bir restoranta ait ürünler var. Kaldırıp devam etmek ister misiniz?'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Kaldır ve Ekle'),
+              onPressed: () {
+                setState(() {
+                  currentIndex = 1;
+                });
+                eklenenList.clear();
+                for (var i = 0; i < quantity; i++) {
+                  eklenenList.add(restorantUrunleri(
+                      urunIsmi: urunSayfasi[0].urunAdi,
+                      urunFiyati: urunSayfasi[0].urunFiyati));
+                }
+                restorantIsmi = restorantIsmiInfo;
+                _showMyDialog(context);
+              },
+            ),
+            TextButton(
+              child: const Text('Geri Dön'),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+            TextButton(
+              child: const Text('Sepete Git'),
+              onPressed: () {
+                setState(() {
+                  currentIndex = 1;
+                });
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const HomePage()),
+                );
+              },
+            )
+          ],
+        );
+      },
+    );
+  }
 }
 
 class MyClipper extends CustomClipper<Path> {
@@ -376,9 +450,8 @@ class MyClipper extends CustomClipper<Path> {
   }
 }
 
-var restorantIsmiInfo = "Elmas Pastanesi";
-
 Widget itemCake() {
+  var adamci = urunSayfasi[0].urunFiyati;
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: <Widget>[
@@ -433,16 +506,16 @@ Widget itemCake() {
               ),
             ],
           ),
-          const Column(
+          Column(
             children: <Widget>[
               Text(
-                "₺25",
-                style: TextStyle(
+                "$adamci",
+                style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 30,
                     color: Colors.white),
               ),
-              Text(
+              const Text(
                 "adet başına",
                 style: TextStyle(
                     fontWeight: FontWeight.normal,
