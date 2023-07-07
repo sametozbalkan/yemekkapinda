@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:yemekkapinda/pages/mainPage.dart';
 import 'package:yemekkapinda/restaurantPage.dart';
 import 'homePage.dart';
 import 'package:yemekkapinda/pages/basketPage.dart';

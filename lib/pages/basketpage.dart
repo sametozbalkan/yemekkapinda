@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:yemekkapinda/homePage.dart';
+import 'package:yemekkapinda/itemInfo.dart';
 import 'package:yemekkapinda/restaurantPage.dart';
 
 // ignore: camel_case_types
@@ -21,6 +22,25 @@ class _basketPageState extends State<basketPage> {
       child: ListView(scrollDirection: Axis.vertical, children: <Widget>[
         eklenenList.isNotEmpty
             ? ListView(shrinkWrap: true, children: [
+                const Card(
+                    color: Color.fromARGB(255, 243, 243, 243),
+                    child: Padding(
+                      padding: EdgeInsets.all(10),
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "Tahmini teslimat süresi:",
+                                style:
+                                    TextStyle(color: Colors.red, fontSize: 24),
+                              )
+                            ],
+                          )
+                        ],
+                      ),
+                    )),
                 Card(
                   color: const Color.fromARGB(255, 243, 243, 243),
                   child: Column(children: [
@@ -133,6 +153,30 @@ class _basketPageState extends State<basketPage> {
                                         )),
                                   )));
                         }),
+                    Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: Row(
+                        children: [
+                          TextButton(
+                            onPressed: () {
+                              setState(() {
+                                restorantIsmiInfo =
+                                    restorantList[0].restorantIsmiRP;
+                              });
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const RestaurantPage()));
+                            },
+                            child: const Text(
+                              "Daha fazla ürün ekle",
+                              style: TextStyle(color: Colors.red),
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
                   ]),
                 ),
               ])
@@ -142,20 +186,78 @@ class _basketPageState extends State<basketPage> {
                   SizedBox(
                     width: double.infinity,
                     height: MediaQuery.of(context).size.height - 120,
-                    child: const Column(
+                    child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                        Column(
                           children: [
-                            Icon(
-                              Icons.not_accessible,
-                              size: 36,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Card(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(50.0),
+                                    child: Column(
+                                      children: [
+                                        const Padding(
+                                          padding: EdgeInsets.all(20.0),
+                                          child: Row(
+                                            children: [
+                                              Icon(
+                                                Icons.not_accessible,
+                                                size: 72,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        const Row(
+                                          children: [
+                                            Text(
+                                              "Sepetiniz şu an boş.",
+                                              style: TextStyle(fontSize: 28),
+                                            )
+                                          ],
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(20.0),
+                                          child: Row(
+                                            children: [
+                                              TextButton(
+                                                  style: ButtonStyle(
+                                                      backgroundColor:
+                                                          MaterialStateProperty
+                                                              .all(Colors.red)),
+                                                  onPressed: () {
+                                                    setState(() {
+                                                      currentIndex = 0;
+                                                    });
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              const HomePage()),
+                                                    );
+                                                  },
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: const Text(
+                                                      "Keşfet",
+                                                      style: TextStyle(
+                                                          fontSize: 24,
+                                                          color: Colors.white),
+                                                    ),
+                                                  ))
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                            Text(
-                              "Sepetiniz boş",
-                              style: TextStyle(fontSize: 28),
-                            )
                           ],
                         )
                       ],

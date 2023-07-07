@@ -10,6 +10,7 @@ class mainPage extends StatefulWidget {
   State<mainPage> createState() => _mainPageState();
 }
 
+List<restorantDetay> searchRestaurant = [];
 final TextEditingController abi31 = TextEditingController();
 
 // ignore: camel_case_types
@@ -269,7 +270,6 @@ class _mainPageState extends State<mainPage> {
         ));
   }
 
-  List<restorantDetay> searchRestaurant = [];
   @override
   initState() {
     searchRestaurant = myProducts;
