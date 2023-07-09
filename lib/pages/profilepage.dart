@@ -53,121 +53,184 @@ class _profilePageState extends State<profilePage> {
                       tileMode: TileMode.repeated,
                     ),
                   ),
-                  child: Column(
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.only(top: 25),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            const Expanded(
-                              flex: 19,
-                              child: Text(
+                  child: Row(
+                    children: [
+                      Expanded(
+                        flex: 7,
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 15),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              const Text(
                                 "Profilim",
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold,
                                     fontSize: 36),
                               ),
-                            ),
-                            Expanded(
-                                flex: 6,
-                                child: Row(
-                                  children: [
-                                    TextButton(
-                                        style: TextButton.styleFrom(
-                                          backgroundColor: Colors.white,
-                                        ),
-                                        onPressed: () {
-                                          _showMyDialog(context);
-                                        },
-                                        child: const Text("Hesap Değiştir",
-                                            style:
-                                                TextStyle(color: Colors.red)))
-                                  ],
-                                )),
-                          ],
-                        ),
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          const SizedBox(
-                            height: 15,
-                          ),
-                          const Text(
-                            "2023 Mart'tan beri abone",
-                            style: TextStyle(
-                                fontWeight: FontWeight.normal,
-                                fontSize: 15,
-                                color: Colors.white),
-                          ),
-                          const SizedBox(
-                            height: 15,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
+                              const SizedBox(
+                                height: 15,
+                              ),
+                              const Text(
+                                "2023 Mart'tan beri abone",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 15,
+                                    color: Colors.white),
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
                               Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
-                                  const SizedBox(
+                                  Row(
+                                    children: <Widget>[
+                                      const SizedBox(
+                                        width: 5,
+                                      ),
+                                      Container(
+                                        width: 120,
+                                        decoration: BoxDecoration(
+                                          color: const Color.fromARGB(
+                                              255, 230, 255, 91),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        alignment: Alignment.center,
+                                        child: const Text(
+                                          "Sürekli Müşteri",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 15,
+                                              color: Colors.black),
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        width: 5,
+                                      ),
+                                      Container(
+                                        width: 130,
+                                        decoration: BoxDecoration(
+                                          color: const Color.fromARGB(
+                                              255, 255, 199, 135),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        alignment: Alignment.center,
+                                        child: const Text(
+                                          "Mahalle Muhtarı",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 15),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const Column(
+                                    children: <Widget>[],
+                                  )
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                              const Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: <Widget>[
+                                  SizedBox(
                                     width: 5,
-                                  ),
-                                  Container(
-                                    width: 120,
-                                    decoration: BoxDecoration(
-                                      color: const Color.fromARGB(
-                                          255, 230, 255, 91),
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    alignment: Alignment.center,
-                                    child: const Text(
-                                      "Sürekli Müşteri",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 15,
-                                          color: Colors.black),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    width: 5,
-                                  ),
-                                  Container(
-                                    width: 130,
-                                    decoration: BoxDecoration(
-                                      color: const Color.fromARGB(
-                                          255, 255, 199, 135),
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    alignment: Alignment.center,
-                                    child: const Text(
-                                      "Mahalle Muhtarı",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 15),
-                                    ),
                                   ),
                                 ],
                               ),
-                              const Column(
-                                children: <Widget>[],
-                              )
                             ],
                           ),
-                          const SizedBox(
-                            height: 15,
-                          ),
-                          const Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
-                              SizedBox(
-                                width: 5,
-                              ),
-                            ],
-                          ),
-                        ],
+                        ),
                       ),
+                      Expanded(
+                        flex: 3,
+                        child: Row(
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.only(top: 20),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Column(
+                                    children: [
+                                      const Row(
+                                        children: [
+                                          Icon(
+                                            Icons.account_balance_wallet,
+                                            color: Colors.white,
+                                            size: 32,
+                                          ),
+                                          Text(
+                                            " Cüzdan",
+                                            style: TextStyle(
+                                                fontSize: 26,
+                                                color: Colors.white),
+                                          )
+                                        ],
+                                      ),
+                                      const SizedBox(
+                                        height: 8,
+                                      ),
+                                      const Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text("Mevcut bakiye:",
+                                              style: TextStyle(
+                                                  fontSize: 14,
+                                                  color: Colors.white))
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: 5,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text("0,00 TL",
+                                              style: TextStyle(
+                                                  fontSize: 24,
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold))
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: 5,
+                                      ),
+                                      Row(
+                                        children: [
+                                          TextButton(
+                                              style: ButtonStyle(
+                                                  backgroundColor:
+                                                      MaterialStatePropertyAll(
+                                                          Colors.transparent)),
+                                              onPressed: () {},
+                                              child: Text(
+                                                "Para ekle",
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 16),
+                                              ))
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
                     ],
                   ),
                 ),
@@ -286,21 +349,16 @@ class _profilePageState extends State<profilePage> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 10, 15, 5),
-                  child: GestureDetector(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.red,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      width: 120,
-                      height: 35,
-                      child: const Center(
-                          child: Text("Hesabı Güncelle",
-                              style: TextStyle(color: Colors.white))),
-                    ),
-                  ),
-                )
+                    padding: const EdgeInsets.fromLTRB(0, 10, 15, 5),
+                    child: TextButton(
+                        style: TextButton.styleFrom(
+                          backgroundColor: Colors.red,
+                        ),
+                        onPressed: () {
+                          _showMyDialog(context);
+                        },
+                        child: const Text("Hesap Değiştir",
+                            style: TextStyle(color: Colors.white))))
               ],
             )
           ]),

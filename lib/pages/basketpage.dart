@@ -106,7 +106,7 @@ class _basketPageState extends State<basketPage> {
                                                 color: Colors.red),
                                           ),
                                           subtitle: Text(
-                                            "$adamke",
+                                            "$adamke TL",
                                             style: const TextStyle(
                                                 fontSize: 13,
                                                 color: Colors.black),
@@ -179,6 +179,27 @@ class _basketPageState extends State<basketPage> {
                     )
                   ]),
                 ),
+                Padding(
+                  padding: const EdgeInsets.only(right: 10, bottom: 20, top: 5),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      SizedBox(
+                        height: 30,
+                        width: 150,
+                        child: FloatingActionButton(
+                          backgroundColor: Colors.red,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5)),
+                          child: const Text("Sepeti Onayla",
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 16)),
+                          onPressed: () {},
+                        ),
+                      ),
+                    ],
+                  ),
+                )
               ])
             : Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -204,8 +225,8 @@ class _basketPageState extends State<basketPage> {
                                           child: Row(
                                             children: [
                                               Icon(
-                                                Icons.not_accessible,
-                                                size: 72,
+                                                Icons.shopping_basket_outlined,
+                                                size: 80,
                                               ),
                                             ],
                                           ),
@@ -230,6 +251,7 @@ class _basketPageState extends State<basketPage> {
                                                   onPressed: () {
                                                     setState(() {
                                                       currentIndex = 0;
+                                                      screens[0];
                                                     });
                                                     Navigator.push(
                                                       context,
@@ -265,26 +287,6 @@ class _basketPageState extends State<basketPage> {
                   ),
                 ],
               ),
-        Padding(
-          padding: const EdgeInsets.only(right: 10, bottom: 20, top: 5),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-              SizedBox(
-                height: 30,
-                width: 150,
-                child: FloatingActionButton(
-                  backgroundColor: Colors.red,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5)),
-                  child: const Text("Sepeti Onayla",
-                      style: TextStyle(color: Colors.white, fontSize: 16)),
-                  onPressed: () {},
-                ),
-              ),
-            ],
-          ),
-        ),
       ]),
     );
   }

@@ -236,80 +236,84 @@ class _InfoPageState extends State<InfoPage> {
                 ],
               ),
             ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width,
-              height: 210,
-              child: Scrollbar(
-                thumbVisibility: true,
-                thickness: 5,
-                controller: yourScrollController,
-                child: ListView.separated(
+            Padding(
+              padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+              child: SizedBox(
+                width: MediaQuery.of(context).size.width,
+                height: 210,
+                child: Scrollbar(
+                  thumbVisibility: true,
+                  thickness: 5,
                   controller: yourScrollController,
-                  scrollDirection: Axis.horizontal,
-                  padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
-                  itemCount: 5,
-                  itemBuilder: (context, index) {
-                    return SizedBox(
-                      width: 200,
-                      height: 200,
-                      child: Card(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Column(
-                          children: [
-                            Expanded(
-                                flex: 7,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    ClipRRect(
-                                        borderRadius:
-                                            BorderRadius.circular(8.0),
-                                        child: Image.asset(
-                                          "assets/cake.jpg",
-                                          fit: BoxFit.fill,
-                                          width: 192,
-                                        )),
-                                  ],
-                                )),
-                            const Expanded(
-                                flex: 3,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Padding(
-                                      padding: EdgeInsets.fromLTRB(10, 5, 0, 5),
-                                      child: Row(
-                                        children: [
-                                          Text(
-                                            "Kakaolu Kek",
-                                            style: TextStyle(
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.bold),
-                                          )
-                                        ],
+                  child: ListView.separated(
+                    controller: yourScrollController,
+                    scrollDirection: Axis.horizontal,
+                    padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+                    itemCount: 5,
+                    itemBuilder: (context, index) {
+                      return SizedBox(
+                        width: 200,
+                        height: 200,
+                        child: Card(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Column(
+                            children: [
+                              Expanded(
+                                  flex: 7,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(8.0),
+                                          child: Image.asset(
+                                            "assets/cake.jpg",
+                                            fit: BoxFit.fill,
+                                            width: 192,
+                                          )),
+                                    ],
+                                  )),
+                              const Expanded(
+                                  flex: 3,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Padding(
+                                        padding:
+                                            EdgeInsets.fromLTRB(10, 5, 0, 5),
+                                        child: Row(
+                                          children: [
+                                            Text(
+                                              "Kakaolu Kek",
+                                              style: TextStyle(
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.bold),
+                                            )
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                    Padding(
-                                      padding:
-                                          EdgeInsets.only(left: 10, bottom: 5),
-                                      child: Row(
-                                        children: [Text("31 TL")],
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                            left: 10, bottom: 5),
+                                        child: Row(
+                                          children: [Text("31 TL")],
+                                        ),
                                       ),
-                                    ),
-                                  ],
-                                )),
-                          ],
+                                    ],
+                                  )),
+                            ],
+                          ),
                         ),
-                      ),
-                    );
-                  },
-                  separatorBuilder: (BuildContext context, int index) {
-                    return const SizedBox(
-                      width: 10,
-                    );
-                  },
+                      );
+                    },
+                    separatorBuilder: (BuildContext context, int index) {
+                      return const SizedBox(
+                        width: 10,
+                      );
+                    },
+                  ),
                 ),
               ),
             )

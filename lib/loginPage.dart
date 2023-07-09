@@ -59,7 +59,7 @@ class _LoginPageState extends State<LoginPage> {
                   padding: EdgeInsets.only(bottom: 80),
                   child: Text(
                     "Yemek Kapında",
-                    style: TextStyle(fontSize: 40, color: Colors.red),
+                    style: TextStyle(fontSize: 60, color: Colors.red),
                   ),
                 ),
                 Padding(

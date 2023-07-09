@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:yemekkapinda/pages/basketPage.dart';
 import 'package:yemekkapinda/pages/profilePage.dart';
 import 'package:yemekkapinda/pages/mainPage.dart';
+import 'favoriPage.dart';
 
 void main() {
   runApp(const HomePage());
@@ -32,13 +33,9 @@ class MyHomePage extends StatefulWidget {
 }
 
 int currentIndex = 0;
+final screens = [const mainPage(), const basketPage(), const profilePage()];
 
 class _HomePageState extends State<MyHomePage> {
-  static final screens = [
-    const mainPage(),
-    const basketPage(),
-    const profilePage()
-  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,10 +51,10 @@ class _HomePageState extends State<MyHomePage> {
                 size: 30,
               ),
               onPressed: () {
-                //Navigator.push(
-                // context,
-                //  MaterialPageRoute(builder: (context) => FavoriPage()),
-                //);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const FavoriPage()),
+                );
               },
             ),
             const SizedBox(
