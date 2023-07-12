@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:yemekkapinda/pages/profilePage.dart';
+import 'package:yemekkapinda/pages/restorantCards.dart';
 import 'package:yemekkapinda/restaurantPage.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 // ignore: camel_case_types
 class mainPage extends StatefulWidget {
@@ -14,64 +16,28 @@ List<restorantDetay> searchRestaurant = [];
 final TextEditingController abi31 = TextEditingController();
 
 // ignore: camel_case_types
-class restorantDetay {
-  double yildizSayisi = 0;
-  String restorantIsmi, tanimlama, resim, etiketIsmi, etiketIsmi2;
-  restorantDetay(
-      {required this.yildizSayisi,
-      required this.restorantIsmi,
-      required this.tanimlama,
-      required this.resim,
-      required this.etiketIsmi,
-      required this.etiketIsmi2});
-}
 
-final List<restorantDetay> myProducts = [
-  restorantDetay(
-      yildizSayisi: 4,
-      restorantIsmi: "Elmas Pastanesi",
-      tanimlama: "Taze ve enfes tatlılar",
-      resim: "cake",
-      etiketIsmi: "Taze",
-      etiketIsmi2: "Muazzam"),
-  restorantDetay(
-      yildizSayisi: 3.5,
-      restorantIsmi: "Bedesten Büfe",
-      tanimlama: "Hatay usulü döner",
-      resim: "doner",
-      etiketIsmi: "Acılı",
-      etiketIsmi2: "Yerel Lezzet"),
-  restorantDetay(
-      yildizSayisi: 4,
-      restorantIsmi: "Taze İçecekler",
-      tanimlama: "Soğuk mevye suları",
-      resim: "juice",
-      etiketIsmi: "Taze",
-      etiketIsmi2: "Soğuk"),
-  restorantDetay(
-      yildizSayisi: 4.5,
-      restorantIsmi: "Urfa Ev Yemekleri",
-      tanimlama: "Yöresel lezzetler",
-      resim: "elite",
-      etiketIsmi: "Acılı",
-      etiketIsmi2: "Yerel Lezzet"),
-  restorantDetay(
-      yildizSayisi: 2.5,
-      restorantIsmi: "Meriç Döner",
-      tanimlama: "Hatay usulü döner",
-      resim: "doner",
-      etiketIsmi: "Acılı",
-      etiketIsmi2: "Yerel Lezzet"),
-];
+final List<restorantDetay> mainRestorantKartlari = [];
 
 bool _isShow = true;
 FocusNode myFocusNode = FocusNode();
 
 // ignore: camel_case_types
 class _mainPageState extends State<mainPage> {
-  @override
+  void restorantEkle() {
+    FirebaseFirestore.instance.collection("restorants").add({
+      "id": 5,
+      "resim": "doner",
+      "restorantIsmi": "abi",
+      "tanimlama": "yokke",
+      "yildizSayisi": 2.5
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    CollectionReference resRef =
+        FirebaseFirestore.instance.collection("restorants");
     return Scaffold(
         appBar: AppBar(
           elevation: 1,
@@ -92,7 +58,9 @@ class _mainPageState extends State<mainPage> {
                       ? Colors.red
                       : const Color.fromARGB(255, 119, 119, 119)),
             ),
-            onChanged: (value) => filtreliSonuclar(value),
+            onChanged: (value) {
+              filtreliSonuclar(value);
+            },
           ),
           bottom: AppBar(
             centerTitle: true,
@@ -180,6 +148,7 @@ class _mainPageState extends State<mainPage> {
         ),
         body: ListView(
           children: [
+            //ElevatedButton(onPressed: (){restorantEkle();}, child: Text("Ekle")),
             Padding(
               padding: const EdgeInsets.fromLTRB(5, 5, 5, 0),
               child: ListView(
@@ -232,36 +201,59 @@ class _mainPageState extends State<mainPage> {
                           ],
                         ),
                       )),
-                  GridView.builder(
-                      shrinkWrap: true,
-                      gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                          maxCrossAxisExtent: MediaQuery.of(context).size.width,
-                          childAspectRatio: 4.5 / 2),
-                      itemCount: searchRestaurant.length,
-                      itemBuilder: (BuildContext ctx, index) {
-                        return GridTile(
-                          child: GestureDetector(
-                            child: restorantCard(
-                                searchRestaurant[index].yildizSayisi,
-                                searchRestaurant[index].restorantIsmi,
-                                searchRestaurant[index].tanimlama,
-                                searchRestaurant[index].resim,
-                                searchRestaurant[index].etiketIsmi,
-                                searchRestaurant[index].etiketIsmi2,
-                                context),
-                            onTap: () {
-                              setState(() {
-                                restorantList[0].restorantIsmiRP =
-                                    searchRestaurant[index].restorantIsmi;
-                              });
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const RestaurantPage()));
-                            },
-                          ),
-                        );
+                  StreamBuilder<QuerySnapshot>(
+                      stream: resRef.snapshots(),
+                      builder:
+                          (BuildContext context, AsyncSnapshot asyncSnapshot) {
+                        return asyncSnapshot.hasData &&
+                                asyncSnapshot.data != null
+                            ? GridView.builder(
+                                shrinkWrap: true,
+                                itemCount: 3,
+                                itemBuilder: (context, index) {
+                                  List<DocumentSnapshot> listOfDocumentSnap =
+                                      asyncSnapshot.data.docs;
+                                  mainRestorantKartlari.add(restorantDetay(
+                                      id: listOfDocumentSnap[index]["id"],
+                                      yildizSayisi: (listOfDocumentSnap[index]
+                                              ["yildizSayisi"])
+                                          .toDouble(),
+                                      restorantIsmi: listOfDocumentSnap[index]
+                                          ["restorantIsmi"],
+                                      tanimlama: listOfDocumentSnap[index]
+                                          ["tanimlama"],
+                                      resim: listOfDocumentSnap[index]
+                                          ["resim"]));
+                                  return GridTile(
+                                    child: GestureDetector(
+                                      child: restorantCard(
+                                          searchRestaurant[index].yildizSayisi,
+                                          searchRestaurant[index].restorantIsmi,
+                                          searchRestaurant[index].tanimlama,
+                                          searchRestaurant[index].resim,
+                                          context),
+                                      onTap: () {
+                                        setState(() {
+                                          restorantList[0].restorantIsmiRP =
+                                              searchRestaurant[index]
+                                                  .restorantIsmi;
+                                        });
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const RestaurantPage()));
+                                      },
+                                    ),
+                                  );
+                                },
+                                gridDelegate:
+                                    SliverGridDelegateWithMaxCrossAxisExtent(
+                                        maxCrossAxisExtent:
+                                            MediaQuery.of(context).size.width,
+                                        childAspectRatio: 4.5 / 1.6),
+                              )
+                            : const Center(child: CircularProgressIndicator());
                       }),
                 ],
               ),
@@ -272,7 +264,7 @@ class _mainPageState extends State<mainPage> {
 
   @override
   initState() {
-    searchRestaurant = myProducts;
+    searchRestaurant = mainRestorantKartlari;
     super.initState();
   }
 
@@ -280,9 +272,9 @@ class _mainPageState extends State<mainPage> {
     List<restorantDetay> sonuc = [];
     if (arananKelime.isEmpty) {
       _isShow = true;
-      sonuc = myProducts;
+      sonuc = mainRestorantKartlari;
     } else {
-      sonuc = myProducts
+      sonuc = mainRestorantKartlari
           .where((user) => user.restorantIsmi
               .toLowerCase()
               .contains(arananKelime.toLowerCase()))
@@ -410,8 +402,7 @@ class _mainPageState extends State<mainPage> {
 }
 
 double x = 1;
-Widget restorantCard(yildizSayisi, restorantIsmi, tanimlama, resim, etiketIsmi,
-    etiketIsmi2, context) {
+Widget restorantCard(yildizSayisi, restorantIsmi, tanimlama, resim, context) {
   return Padding(
       padding: const EdgeInsets.fromLTRB(0, 0, 0, 3),
       child: SizedBox(
@@ -420,163 +411,115 @@ Widget restorantCard(yildizSayisi, restorantIsmi, tanimlama, resim, etiketIsmi,
           elevation: 0,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(5),
-            side: const BorderSide(width: 0.4, color: Colors.redAccent),
+            side: const BorderSide(width: 1, color: Colors.grey),
           ),
-          child: FittedBox(
-            fit: BoxFit.fill,
-            child: Row(
-              children: <Widget>[
-                SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.7,
-                    child: FittedBox(
-                      child: Column(
-                        //mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          const SizedBox(
-                            height: 3,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 3),
-                            child: Text(
-                              "$restorantIsmi",
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 15,
-                                  color: Colors.red),
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          Text(
-                            "$tanimlama",
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.615,
+                  child: FittedBox(
+                    child: Column(
+                      children: <Widget>[
+                        const SizedBox(
+                          height: 3,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 3),
+                          child: Text(
+                            "$restorantIsmi",
                             style: const TextStyle(
-                                fontWeight: FontWeight.normal,
-                                fontSize: 9.5,
-                                color: Colors.grey),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 15,
+                                color: Colors.red),
                           ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          Row(
-                            children: <Widget>[
-                              const SizedBox(
-                                width: 5,
-                              ),
-                              Container(
-                                width: 30,
-                                decoration: BoxDecoration(
-                                  color: Colors.red,
-                                  borderRadius: BorderRadius.circular(5),
-                                ),
-                                alignment: Alignment.center,
-                                child: Text(
-                                  "$etiketIsmi",
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 9.5,
-                                      color: Colors.white),
-                                ),
-                              ),
-                              const SizedBox(
-                                width: 5,
-                              ),
-                              Container(
-                                width: 68,
-                                decoration: BoxDecoration(
-                                  color:
-                                      const Color.fromARGB(255, 255, 199, 135),
-                                  borderRadius: BorderRadius.circular(5),
-                                ),
-                                alignment: Alignment.center,
-                                child: Text(
-                                  "$etiketIsmi2",
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 9.5),
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
-                              const Text(
-                                "Puan ",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.normal,
-                                    fontSize: 7,
-                                    color: Colors.grey),
-                              ),
-                              const SizedBox(
-                                width: 5,
-                              ),
-                              for (x = 1; x <= yildizSayisi; x++) ...[
-                                const Icon(
-                                  Icons.star,
-                                  size: 10,
-                                  color: Colors.orangeAccent,
-                                ),
-                              ],
-                              if (yildizSayisi - yildizSayisi.toInt() ==
-                                  0.5) ...[
-                                const Icon(
-                                  Icons.star_half,
-                                  size: 10,
-                                  color: Colors.orangeAccent,
-                                ),
-                              ],
-                              for (x = 1; x <= 5 - yildizSayisi; x++) ...[
-                                const Icon(
-                                  Icons.star_border,
-                                  size: 10,
-                                  color: Colors.orangeAccent,
-                                ),
-                              ],
-                              Text(
-                                "$yildizSayisi",
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.normal,
-                                    fontSize: 7,
-                                    color: Colors.grey),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 5,
-                          )
-                        ],
-                      ),
-                    )),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.04,
-                ),
-                SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.3,
-                    child: FittedBox(
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width,
-                            height: MediaQuery.of(context).size.width * 1.5,
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(10),
-                              child: Image(
-                                fit: BoxFit.fill,
-                                alignment: Alignment.center,
-                                image: AssetImage('assets/$resim.jpg'),
-                              ),
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          "$tanimlama",
+                          style: const TextStyle(
+                              fontWeight: FontWeight.normal,
+                              fontSize: 9.5,
+                              color: Colors.grey),
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            const Text(
+                              "Puan ",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 7,
+                                  color: Colors.grey),
                             ),
-                          )
-                        ],
-                      ),
-                    )),
-              ],
-            ),
+                            const SizedBox(
+                              width: 5,
+                            ),
+                            for (x = 1; x <= yildizSayisi; x++) ...[
+                              const Icon(
+                                Icons.star,
+                                size: 10,
+                                color: Colors.orangeAccent,
+                              ),
+                            ],
+                            if (yildizSayisi - yildizSayisi.toInt() == 0.5) ...[
+                              const Icon(
+                                Icons.star_half,
+                                size: 10,
+                                color: Colors.orangeAccent,
+                              ),
+                            ],
+                            for (x = 1; x <= 5 - yildizSayisi; x++) ...[
+                              const Icon(
+                                Icons.star_border,
+                                size: 10,
+                                color: Colors.orangeAccent,
+                              ),
+                            ],
+                            Text(
+                              "$yildizSayisi",
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 7,
+                                  color: Colors.grey),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        )
+                      ],
+                    ),
+                  )),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.04,
+              ),
+              SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.3,
+                  child: FittedBox(
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width,
+                          height: MediaQuery.of(context).size.width * 1.5,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: Image(
+                              fit: BoxFit.fill,
+                              alignment: Alignment.center,
+                              image: AssetImage('assets/$resim.jpg'),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  )),
+            ],
           ),
         ),
       ));

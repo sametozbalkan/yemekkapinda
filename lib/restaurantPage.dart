@@ -18,10 +18,10 @@ class restorantUrunleri {
 }
 
 final List<restorantUrunleri> sepetDurumu = [
-  restorantUrunleri(urunIsmi: "Dalga", urunFiyati: 31),
-  restorantUrunleri(urunIsmi: "Dalga", urunFiyati: 32),
-  restorantUrunleri(urunIsmi: "Dalga", urunFiyati: 33),
-  restorantUrunleri(urunIsmi: "Dalga", urunFiyati: 34),
+  restorantUrunleri(urunIsmi: "Dalga1", urunFiyati: 31),
+  restorantUrunleri(urunIsmi: "Dalga2", urunFiyati: 32),
+  restorantUrunleri(urunIsmi: "Dalga3", urunFiyati: 33),
+  restorantUrunleri(urunIsmi: "Dalga4", urunFiyati: 34),
 ];
 
 // ignore: camel_case_types
@@ -111,7 +111,7 @@ class _RestaurantPageState extends State<RestaurantPage> {
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) =>
-                                                  const HomePage()));
+                                                  HomePage()));
                                     },
                                   ),
                                 ),
@@ -135,7 +135,7 @@ class _RestaurantPageState extends State<RestaurantPage> {
             ),
           ),
           const Padding(
-            padding: EdgeInsets.all(15),
+            padding: EdgeInsets.only(top: 15),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -149,58 +149,63 @@ class _RestaurantPageState extends State<RestaurantPage> {
               ],
             ),
           ),
-          GridView.builder(
-              shrinkWrap: true,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2, childAspectRatio: 3.3),
-              itemCount: sepetDurumu.length,
-              itemBuilder: (BuildContext ctx, index) {
-                var isim = sepetDurumu[index].urunFiyati;
-                return GridTile(
-                    child: GestureDetector(
-                        onTap: () {
-                          restorantIsmiInfo = restorantList[0].restorantIsmiRP;
-                          urunSayfasi[0].urunAdi = sepetDurumu[index].urunIsmi;
-                          urunSayfasi[0].urunFiyati =
-                              sepetDurumu[index].urunFiyati;
-                          total = sepetDurumu[index].urunFiyati;
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const InfoPage()),
-                          );
-                        },
-                        child: SizedBox(
-                          height: 80,
-                          width: (MediaQuery.of(context).size.width / 2) - 5,
-                          child: Card(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                              ),
-                              elevation: 5,
-                              child: ListTile(
-                                title: Text(
-                                  sepetDurumu[index].urunIsmi,
-                                  style: const TextStyle(
-                                      fontSize: 22, color: Colors.red),
+          Padding(
+            padding: const EdgeInsets.only(left: 5, right: 5),
+            child: GridView.builder(
+                shrinkWrap: true,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2, childAspectRatio: 2.6),
+                itemCount: sepetDurumu.length,
+                itemBuilder: (BuildContext ctx, index) {
+                  var isim = sepetDurumu[index].urunFiyati;
+                  return GridTile(
+                      child: GestureDetector(
+                          onTap: () {
+                            restorantIsmiInfo =
+                                restorantList[0].restorantIsmiRP;
+                            urunSayfasi[0].urunAdi =
+                                sepetDurumu[index].urunIsmi;
+                            urunSayfasi[0].urunFiyati =
+                                sepetDurumu[index].urunFiyati;
+                            total = sepetDurumu[index].urunFiyati;
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const InfoPage()),
+                            );
+                          },
+                          child: SizedBox(
+                            height: 100,
+                            width: (MediaQuery.of(context).size.width / 2) - 10,
+                            child: Card(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
                                 ),
-                                subtitle: Text(
-                                  "$isim TL",
-                                  style: const TextStyle(
-                                      fontSize: 13, color: Colors.black),
-                                ),
-                                trailing: IconButton(
-                                  icon: const Icon(
-                                    Icons.add,
-                                    color: Colors.red,
+                                elevation: 5,
+                                child: ListTile(
+                                  title: Text(
+                                    sepetDurumu[index].urunIsmi,
+                                    style: const TextStyle(
+                                        fontSize: 22, color: Colors.red),
                                   ),
-                                  onPressed: () {
-                                    setState(() {});
-                                  },
-                                ),
-                              )),
-                        )));
-              })
+                                  subtitle: Text(
+                                    "$isim TL",
+                                    style: const TextStyle(
+                                        fontSize: 13, color: Colors.black),
+                                  ),
+                                  trailing: IconButton(
+                                    icon: const Icon(
+                                      Icons.add,
+                                      color: Colors.red,
+                                    ),
+                                    onPressed: () {
+                                      setState(() {});
+                                    },
+                                  ),
+                                )),
+                          )));
+                }),
+          )
         ],
       ),
     );

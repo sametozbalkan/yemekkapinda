@@ -79,8 +79,7 @@ class _InfoPageState extends State<InfoPage> {
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) =>
-                                              const HomePage()));
+                                          builder: (context) => HomePage()));
                                 },
                               ),
                             ],
@@ -117,13 +116,8 @@ class _InfoPageState extends State<InfoPage> {
               child: Column(
                 children: <Widget>[
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.end,
                     children: <Widget>[
-                      const Text(
-                        "Adet",
-                        style: TextStyle(
-                            fontWeight: FontWeight.normal, fontSize: 25),
-                      ),
                       Container(
                         decoration: BoxDecoration(
                           color: Colors.red,
@@ -178,11 +172,17 @@ class _InfoPageState extends State<InfoPage> {
                   const SizedBox(
                     height: 10,
                   ),
-                  const Text("Toplam tutar"),
+                  const Text(
+                    "Toplam tutar",
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
                   const SizedBox(
                     height: 10,
                   ),
-                  Text("₺$total"),
+                  Text("₺$total",
+                      style: TextStyle(
+                        fontSize: 20,
+                      )),
                   const SizedBox(
                     height: 20,
                   ),
@@ -191,14 +191,14 @@ class _InfoPageState extends State<InfoPage> {
                     children: <Widget>[
                       SizedBox(
                         height: 40,
-                        width: MediaQuery.of(context).size.width * 0.5,
+                        width: MediaQuery.of(context).size.width * 0.4,
                         child: FloatingActionButton(
                           backgroundColor: Colors.red,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10)),
                           child: const Text("Sepete Ekle",
                               style:
-                                  TextStyle(color: Colors.white, fontSize: 22)),
+                                  TextStyle(color: Colors.white, fontSize: 20)),
                           onPressed: () {
                             setState(() {
                               if (eklenenList.isEmpty |
@@ -220,7 +220,7 @@ class _InfoPageState extends State<InfoPage> {
                     ],
                   ),
                   const SizedBox(
-                    height: 80,
+                    height: 40,
                   ),
                   const Row(
                     children: <Widget>[
@@ -241,79 +241,72 @@ class _InfoPageState extends State<InfoPage> {
               child: SizedBox(
                 width: MediaQuery.of(context).size.width,
                 height: 210,
-                child: Scrollbar(
-                  thumbVisibility: true,
-                  thickness: 5,
+                child: ListView.separated(
                   controller: yourScrollController,
-                  child: ListView.separated(
-                    controller: yourScrollController,
-                    scrollDirection: Axis.horizontal,
-                    padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
-                    itemCount: 5,
-                    itemBuilder: (context, index) {
-                      return SizedBox(
-                        width: 200,
-                        height: 200,
-                        child: Card(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Column(
-                            children: [
-                              Expanded(
-                                  flex: 7,
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(8.0),
-                                          child: Image.asset(
-                                            "assets/cake.jpg",
-                                            fit: BoxFit.fill,
-                                            width: 192,
-                                          )),
-                                    ],
-                                  )),
-                              const Expanded(
-                                  flex: 3,
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Padding(
-                                        padding:
-                                            EdgeInsets.fromLTRB(10, 5, 0, 5),
-                                        child: Row(
-                                          children: [
-                                            Text(
-                                              "Kakaolu Kek",
-                                              style: TextStyle(
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.bold),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsets.only(
-                                            left: 10, bottom: 5),
-                                        child: Row(
-                                          children: [Text("31 TL")],
-                                        ),
-                                      ),
-                                    ],
-                                  )),
-                            ],
-                          ),
+                  scrollDirection: Axis.horizontal,
+                  itemCount: 5,
+                  itemBuilder: (context, index) {
+                    return SizedBox(
+                      width: 200,
+                      height: 200,
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
                         ),
-                      );
-                    },
-                    separatorBuilder: (BuildContext context, int index) {
-                      return const SizedBox(
-                        width: 10,
-                      );
-                    },
-                  ),
+                        child: Column(
+                          children: [
+                            Expanded(
+                                flex: 7,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    ClipRRect(
+                                        borderRadius:
+                                            BorderRadius.circular(8.0),
+                                        child: Image.asset(
+                                          "assets/cake.jpg",
+                                          fit: BoxFit.fill,
+                                          width: 192,
+                                        )),
+                                  ],
+                                )),
+                            const Expanded(
+                                flex: 3,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsets.fromLTRB(10, 5, 0, 5),
+                                      child: Row(
+                                        children: [
+                                          Text(
+                                            "Kakaolu Kek",
+                                            style: TextStyle(
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.bold),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding:
+                                          EdgeInsets.only(left: 10, bottom: 5),
+                                      child: Row(
+                                        children: [Text("31 TL")],
+                                      ),
+                                    ),
+                                  ],
+                                )),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                  separatorBuilder: (BuildContext context, int index) {
+                    return const SizedBox(
+                      width: 10,
+                    );
+                  },
                 ),
               ),
             )
@@ -362,7 +355,7 @@ class _InfoPageState extends State<InfoPage> {
                 });
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const HomePage()),
+                  MaterialPageRoute(builder: (context) => HomePage()),
                 );
               },
             ),
@@ -424,7 +417,7 @@ class _InfoPageState extends State<InfoPage> {
                 });
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const HomePage()),
+                  MaterialPageRoute(builder: (context) => HomePage()),
                 );
               },
             )
@@ -512,7 +505,7 @@ Widget itemCake() {
           Column(
             children: <Widget>[
               Text(
-                "$adamci",
+                "₺$adamci",
                 style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 30,

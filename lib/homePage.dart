@@ -3,22 +3,34 @@ import 'package:yemekkapinda/pages/basketPage.dart';
 import 'package:yemekkapinda/pages/profilePage.dart';
 import 'package:yemekkapinda/pages/mainPage.dart';
 import 'favoriPage.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() {
-  runApp(const HomePage());
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  //await Firebase.initializeApp();
+  runApp(HomePage());
 }
 
 class HomePage extends StatelessWidget {
-  const HomePage({
+  final Future<FirebaseApp> _initialization = Firebase.initializeApp();
+  HomePage({
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Yemek Kapında',
-      home: MyHomePage(title: 'Yemek Kapında'),
+      home: FutureBuilder(future: _initialization, builder: (context, snapshot){
+        if(snapshot.hasError){
+          return const Center(child: Text("Beklenmedik bir hata oluştu!"),);
+        } else if(snapshot.hasData){
+          return const MyHomePage(title: 'Yemek Kapında');
+        }else{
+          return const Center(child: CircularProgressIndicator(),);
+        }
+      },),
     );
   }
 }

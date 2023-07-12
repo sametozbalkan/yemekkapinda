@@ -73,7 +73,7 @@ class _basketPageState extends State<basketPage> {
                         shrinkWrap: true,
                         gridDelegate:
                             const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 1, childAspectRatio: 6.5),
+                                crossAxisCount: 1, childAspectRatio: 5.4),
                         itemCount: eklenenList.length,
                         itemBuilder: (BuildContext ctx, index) {
                           var adamke = eklenenList[index].urunFiyati;
@@ -83,8 +83,7 @@ class _basketPageState extends State<basketPage> {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) =>
-                                              const HomePage()),
+                                          builder: (context) => HomePage()),
                                     );
                                   },
                                   child: SizedBox(
@@ -257,14 +256,13 @@ class _basketPageState extends State<basketPage> {
                                                       context,
                                                       MaterialPageRoute(
                                                           builder: (context) =>
-                                                              const HomePage()),
+                                                              HomePage()),
                                                     );
                                                   },
-                                                  child: Padding(
+                                                  child: const Padding(
                                                     padding:
-                                                        const EdgeInsets.all(
-                                                            8.0),
-                                                    child: const Text(
+                                                        EdgeInsets.all(8.0),
+                                                    child: Text(
                                                       "Keşfet",
                                                       style: TextStyle(
                                                           fontSize: 24,

@@ -70,7 +70,7 @@ class _profilePageState extends State<profilePage> {
                                     fontSize: 36),
                               ),
                               const SizedBox(
-                                height: 15,
+                                height: 5,
                               ),
                               const Text(
                                 "2023 Mart'tan beri abone",
@@ -88,43 +88,30 @@ class _profilePageState extends State<profilePage> {
                                 children: <Widget>[
                                   Row(
                                     children: <Widget>[
-                                      const SizedBox(
-                                        width: 5,
-                                      ),
                                       Container(
-                                        width: 120,
+                                        width: 145,
                                         decoration: BoxDecoration(
-                                          color: const Color.fromARGB(
-                                              255, 230, 255, 91),
+                                          color: Colors.redAccent,
                                           borderRadius:
                                               BorderRadius.circular(10),
                                         ),
                                         alignment: Alignment.center,
-                                        child: const Text(
-                                          "Sürekli Müşteri",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 15,
-                                              color: Colors.black),
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        width: 5,
-                                      ),
-                                      Container(
-                                        width: 130,
-                                        decoration: BoxDecoration(
-                                          color: const Color.fromARGB(
-                                              255, 255, 199, 135),
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                        ),
-                                        alignment: Alignment.center,
-                                        child: const Text(
-                                          "Mahalle Muhtarı",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 15),
+                                        child: const Padding(
+                                          padding: EdgeInsets.all(5),
+                                          child: Row(
+                                            children: [
+                                              Icon(Icons.stars,
+                                                  color: Colors.white,
+                                                  size: 20),
+                                              Text(
+                                                " Mahalle Muhtarı",
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 15,
+                                                    color: Colors.white),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ],
@@ -167,12 +154,12 @@ class _profilePageState extends State<profilePage> {
                                           Icon(
                                             Icons.account_balance_wallet,
                                             color: Colors.white,
-                                            size: 32,
+                                            size: 27,
                                           ),
                                           Text(
                                             " Cüzdan",
                                             style: TextStyle(
-                                                fontSize: 26,
+                                                fontSize: 24,
                                                 color: Colors.white),
                                           )
                                         ],
@@ -190,10 +177,10 @@ class _profilePageState extends State<profilePage> {
                                                   color: Colors.white))
                                         ],
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         height: 5,
                                       ),
-                                      Row(
+                                      const Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         children: [
@@ -204,18 +191,18 @@ class _profilePageState extends State<profilePage> {
                                                   fontWeight: FontWeight.bold))
                                         ],
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         height: 5,
                                       ),
                                       Row(
                                         children: [
                                           TextButton(
-                                              style: ButtonStyle(
+                                              style: const ButtonStyle(
                                                   backgroundColor:
                                                       MaterialStatePropertyAll(
                                                           Colors.transparent)),
                                               onPressed: () {},
-                                              child: Text(
+                                              child: const Text(
                                                 "Para ekle",
                                                 style: TextStyle(
                                                     color: Colors.white,
@@ -260,7 +247,7 @@ class _profilePageState extends State<profilePage> {
                 elevation: 0,
                 shape: BeveledRectangleBorder(
                     borderRadius: BorderRadius.circular(5),
-                    side: const BorderSide(width: 0.1, color: Colors.black)),
+                    side: const BorderSide(width: 0.5, color: Colors.grey)),
                 child: Column(
                   children: <Widget>[
                     const Padding(
