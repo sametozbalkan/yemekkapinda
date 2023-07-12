@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "397524493794",
+    "project_id": "ykdatabase-30471",
+    "storage_bucket": "ykdatabase-30471.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:397524493794:android:1701828584b5f9c99685bb",
+        "android_client_info": {
+          "package_name": "com.example.yemekkapinda"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "397524493794-eqtjnmf4eblr01c9r5spqelpbntr8ikg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBz6Hs-YddvanZRJ_45qbVo7IFnVGAfhBA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "397524493794-eqtjnmf4eblr01c9r5spqelpbntr8ikg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
