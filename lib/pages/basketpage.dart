@@ -70,6 +70,7 @@ class _basketPageState extends State<basketPage> {
                       ),
                     ]),
                     GridView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
                         gridDelegate:
                             const SliverGridDelegateWithFixedCrossAxisCount(

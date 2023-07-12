@@ -1,9 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:yemekkapinda/homePage.dart';
-
-void main() {
-  runApp(const Login());
-}
+import 'package:yemekkapinda/registerPage.dart';
 
 class Login extends StatelessWidget {
   const Login({super.key});
@@ -46,6 +44,8 @@ class _LoginPageState extends State<LoginPage> {
   FocusNode myFocusNode = FocusNode();
   @override
   Widget build(BuildContext context) {
+    CollectionReference logRef =
+        FirebaseFirestore.instance.collection("loginidpass");
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -110,10 +110,8 @@ class _LoginPageState extends State<LoginPage> {
                       onPressed: () {
                         if (mailController.text == "admin" &&
                             sifreController.text == "123") {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (_) =>  HomePage()));
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (_) => HomePage()));
                         } else {
                           _showMyDialog(context);
                         }
@@ -138,8 +136,8 @@ class _LoginPageState extends State<LoginPage> {
                                 },
                                 child: const Text(
                                   'Şifremi Yenile',
-                                  style:
-                                      TextStyle(color: Colors.red, fontSize: 15),
+                                  style: TextStyle(
+                                      color: Colors.red, fontSize: 15),
                                 ),
                               )
                             ],
@@ -150,11 +148,17 @@ class _LoginPageState extends State<LoginPage> {
                             children: [
                               const Text('Yeni kullanıcı mısınız?'),
                               TextButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (_) =>
+                                              const RegisterPage()));
+                                },
                                 child: const Text(
                                   'Üye Ol',
-                                  style:
-                                      TextStyle(color: Colors.red, fontSize: 15),
+                                  style: TextStyle(
+                                      color: Colors.red, fontSize: 15),
                                 ),
                               )
                             ],

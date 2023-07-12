@@ -12,7 +12,6 @@ class mainPage extends StatefulWidget {
   State<mainPage> createState() => _mainPageState();
 }
 
-List<restorantDetay> searchRestaurant = [];
 final TextEditingController abi31 = TextEditingController();
 
 // ignore: camel_case_types
@@ -24,7 +23,7 @@ FocusNode myFocusNode = FocusNode();
 
 // ignore: camel_case_types
 class _mainPageState extends State<mainPage> {
-  void restorantEkle() {
+  void restorantEkle() async {
     FirebaseFirestore.instance.collection("restorants").add({
       "id": 5,
       "resim": "doner",
@@ -34,6 +33,7 @@ class _mainPageState extends State<mainPage> {
     });
   }
 
+  String name = "";
   @override
   Widget build(BuildContext context) {
     CollectionReference resRef =
@@ -41,7 +41,7 @@ class _mainPageState extends State<mainPage> {
     return Scaffold(
         appBar: AppBar(
           elevation: 1,
-          toolbarHeight: 66,
+          toolbarHeight: 72,
           backgroundColor: Colors.white,
           title: TextField(
             decoration: InputDecoration(
@@ -59,7 +59,9 @@ class _mainPageState extends State<mainPage> {
                       : const Color.fromARGB(255, 119, 119, 119)),
             ),
             onChanged: (value) {
-              filtreliSonuclar(value);
+              setState(() {
+                name = value;
+              });
             },
           ),
           bottom: AppBar(
@@ -203,49 +205,64 @@ class _mainPageState extends State<mainPage> {
                       )),
                   StreamBuilder<QuerySnapshot>(
                       stream: resRef.snapshots(),
-                      builder:
-                          (BuildContext context, AsyncSnapshot asyncSnapshot) {
-                        return asyncSnapshot.hasData &&
-                                asyncSnapshot.data != null
+                      builder: (BuildContext context, snapshot) {
+                        return snapshot.hasData && snapshot.data != null
                             ? GridView.builder(
                                 shrinkWrap: true,
-                                itemCount: 3,
+                                itemCount: snapshot.data!.docs.length,
                                 itemBuilder: (context, index) {
-                                  List<DocumentSnapshot> listOfDocumentSnap =
-                                      asyncSnapshot.data.docs;
-                                  mainRestorantKartlari.add(restorantDetay(
-                                      id: listOfDocumentSnap[index]["id"],
-                                      yildizSayisi: (listOfDocumentSnap[index]
-                                              ["yildizSayisi"])
-                                          .toDouble(),
-                                      restorantIsmi: listOfDocumentSnap[index]
-                                          ["restorantIsmi"],
-                                      tanimlama: listOfDocumentSnap[index]
-                                          ["tanimlama"],
-                                      resim: listOfDocumentSnap[index]
-                                          ["resim"]));
-                                  return GridTile(
-                                    child: GestureDetector(
-                                      child: restorantCard(
-                                          searchRestaurant[index].yildizSayisi,
-                                          searchRestaurant[index].restorantIsmi,
-                                          searchRestaurant[index].tanimlama,
-                                          searchRestaurant[index].resim,
-                                          context),
-                                      onTap: () {
-                                        setState(() {
-                                          restorantList[0].restorantIsmiRP =
-                                              searchRestaurant[index]
-                                                  .restorantIsmi;
-                                        });
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    const RestaurantPage()));
-                                      },
-                                    ),
-                                  );
+                                  var data = snapshot.data!.docs[index].data()
+                                      as Map<String, dynamic>;
+                                  if (name.isEmpty) {
+                                    return GridTile(
+                                      child: GestureDetector(
+                                        child: restorantCard(
+                                            data["yildizSayisi"],
+                                            data["restorantIsmi"],
+                                            data["tanimlama"],
+                                            data["resim"],
+                                            context),
+                                        onTap: () {
+                                          setState(() {
+                                            restorantList[0].restorantIsmiRP =
+                                                data["restorantIsmi"];
+                                          });
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const RestaurantPage()));
+                                        },
+                                      ),
+                                    );
+                                  }
+                                  if (data["restorantIsmi"]
+                                      .toString()
+                                      .toLowerCase()
+                                      .startsWith(name.toLowerCase())) {
+                                    return GridTile(
+                                      child: GestureDetector(
+                                        child: restorantCard(
+                                            data["yildizSayisi"],
+                                            data["restorantIsmi"],
+                                            data["tanimlama"],
+                                            data["resim"],
+                                            context),
+                                        onTap: () {
+                                          setState(() {
+                                            restorantList[0].restorantIsmiRP =
+                                                data["restorantIsmi"];
+                                          });
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const RestaurantPage()));
+                                        },
+                                      ),
+                                    );
+                                  }
+                                  return Container();
                                 },
                                 gridDelegate:
                                     SliverGridDelegateWithMaxCrossAxisExtent(
@@ -264,27 +281,7 @@ class _mainPageState extends State<mainPage> {
 
   @override
   initState() {
-    searchRestaurant = mainRestorantKartlari;
     super.initState();
-  }
-
-  void filtreliSonuclar(String arananKelime) {
-    List<restorantDetay> sonuc = [];
-    if (arananKelime.isEmpty) {
-      _isShow = true;
-      sonuc = mainRestorantKartlari;
-    } else {
-      sonuc = mainRestorantKartlari
-          .where((user) => user.restorantIsmi
-              .toLowerCase()
-              .contains(arananKelime.toLowerCase()))
-          .toList();
-      _isShow = false;
-    }
-
-    setState(() {
-      searchRestaurant = sonuc;
-    });
   }
 
   Future<void> _showMyDialog(context) async {

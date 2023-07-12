@@ -180,7 +180,7 @@ class _InfoPageState extends State<InfoPage> {
                     height: 10,
                   ),
                   Text("₺$total",
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 20,
                       )),
                   const SizedBox(
