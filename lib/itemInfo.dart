@@ -209,7 +209,25 @@ class _InfoPageState extends State<InfoPage> {
                                       urunFiyati: urunSayfasi[0].urunFiyati));
                                 }
                                 restorantIsmi = restorantIsmiInfo;
-                                _showMyDialog(context);
+                                final snackBar = SnackBar(
+                                  content:
+                                      const Text('Başarıyla sepete eklendi!'),
+                                  action: SnackBarAction(
+                                    label: 'Sepete Git',
+                                    onPressed: () {
+                                      setState(() {
+                                        currentIndex = 1;
+                                      });
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => HomePage()),
+                                      );
+                                    },
+                                  ),
+                                );
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(snackBar);
                               } else {
                                 _showMyDialog2(context);
                               }
@@ -332,45 +350,6 @@ class _InfoPageState extends State<InfoPage> {
     });
   }
 
-  Future<void> _showMyDialog(context) async {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Başarılı'),
-          content: const SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                Text('Sepete eklendi!'),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('Sepete git'),
-              onPressed: () {
-                setState(() {
-                  currentIndex = 1;
-                });
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => HomePage()),
-                );
-              },
-            ),
-            TextButton(
-              child: const Text('Kapat'),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            )
-          ],
-        );
-      },
-    );
-  }
-
   Future<void> _showMyDialog2(context) async {
     return showDialog<void>(
       context: context,
@@ -400,7 +379,22 @@ class _InfoPageState extends State<InfoPage> {
                       urunFiyati: urunSayfasi[0].urunFiyati));
                 }
                 restorantIsmi = restorantIsmiInfo;
-                _showMyDialog(context);
+                final snackBar = SnackBar(
+                  content: const Text('Başarıyla sepete eklendi!'),
+                  action: SnackBarAction(
+                    label: 'Sepete Git',
+                    onPressed: () {
+                      setState(() {
+                        currentIndex = 1;
+                      });
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => HomePage()),
+                      );
+                    },
+                  ),
+                );
+                ScaffoldMessenger.of(context).showSnackBar(snackBar);
               },
             ),
             TextButton(

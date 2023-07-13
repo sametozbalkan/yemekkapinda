@@ -1,6 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:yemekkapinda/homePage.dart';
-import 'package:yemekkapinda/loginPage.dart';
 
 // ignore: camel_case_types
 class profilePage extends StatefulWidget {
@@ -342,7 +341,7 @@ class _profilePageState extends State<profilePage> {
                           backgroundColor: Colors.red,
                         ),
                         onPressed: () {
-                          _showMyDialog(context);
+                          FirebaseAuth.instance.signOut();
                         },
                         child: const Text("Hesap Değiştir",
                             style: TextStyle(color: Colors.white))))
@@ -351,39 +350,6 @@ class _profilePageState extends State<profilePage> {
           ]),
         ],
       ),
-    );
-  }
-
-  Future<void> _showMyDialog(context) async {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Başarılı'),
-          content: const SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                Text('Hesaptan çıkış yapıldı!'),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('Tamam'),
-              onPressed: () {
-                setState(() {
-                  currentIndex = 0;
-                });
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const LoginPage()),
-                );
-              },
-            ),
-          ],
-        );
-      },
     );
   }
 }

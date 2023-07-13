@@ -1,7 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:yemekkapinda/startPage.dart';
-import 'package:firebase_core/firebase_core.dart';
+
+import 'loginPage.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -11,27 +14,44 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  late TextEditingController adController;
-  late TextEditingController soyadController;
-  late TextEditingController mailController;
-  late TextEditingController sifreController;
-  @override
-  void initState() {
-    super.initState();
-    adController = TextEditingController();
-    soyadController = TextEditingController();
-    mailController = TextEditingController();
-    sifreController = TextEditingController();
+  final userCollection = FirebaseFirestore.instance.collection("loginidpass");
+  final firebaseAuth = FirebaseAuth.instance;
+
+  Future<void> signUp(BuildContext context,
+      {required String ad,
+      required String soyad,
+      required String email,
+      required String password}) async {
+    final navigator = Navigator.of(context);
+    try {
+      final UserCredential userCredential = await firebaseAuth
+          .createUserWithEmailAndPassword(email: email, password: password);
+      if (userCredential.user != null) {
+        await _registerUser(
+            ad: ad, soyad: soyad, email: email, password: password);
+        navigator.push(MaterialPageRoute(
+          builder: (context) => const LoginPage(),
+        ));
+      }
+    } on FirebaseAuthException catch (e) {
+      Fluttertoast.showToast(msg: e.message!, toastLength: Toast.LENGTH_LONG);
+    }
   }
 
-  @override
-  void dispose() {
-    adController.dispose();
-    soyadController.dispose();
-    mailController.dispose();
-    sifreController.dispose();
-    super.dispose();
+  Future<void> _registerUser(
+      {required String email,
+      required String password,
+      required String ad,
+      required String soyad}) async {
+    await userCollection
+        .doc()
+        .set({"email": email, "ad": ad, "soyad": soyad, "password": password});
   }
+
+  final mailController = TextEditingController();
+  final sifreController = TextEditingController();
+  final adController = TextEditingController();
+  final soyadController = TextEditingController();
 
   FocusNode myFocusNode = FocusNode();
   @override
@@ -58,16 +78,16 @@ class _RegisterPageState extends State<RegisterPage> {
                     child: TextField(
                       controller: adController,
                       decoration: InputDecoration(
-                        focusedBorder: const OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.red),
-                        ),
-                        border: const OutlineInputBorder(),
-                        labelText: 'Ad',
-                        labelStyle: TextStyle(
-                            color: myFocusNode.hasFocus
-                                ? Colors.red
-                                : const Color.fromARGB(255, 119, 119, 119)),
-                      ),
+                          focusedBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.red),
+                          ),
+                          border: const OutlineInputBorder(),
+                          labelText: 'Ad',
+                          labelStyle: TextStyle(
+                              color: myFocusNode.hasFocus
+                                  ? Colors.red
+                                  : const Color.fromARGB(255, 119, 119, 119)),
+                          hintText: 'Ad'),
                     ),
                   ),
                   Padding(
@@ -75,16 +95,16 @@ class _RegisterPageState extends State<RegisterPage> {
                     child: TextField(
                       controller: soyadController,
                       decoration: InputDecoration(
-                        focusedBorder: const OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.red),
-                        ),
-                        border: const OutlineInputBorder(),
-                        labelText: 'Soyad',
-                        labelStyle: TextStyle(
-                            color: myFocusNode.hasFocus
-                                ? Colors.red
-                                : const Color.fromARGB(255, 119, 119, 119)),
-                      ),
+                          focusedBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.red),
+                          ),
+                          border: const OutlineInputBorder(),
+                          labelText: 'Soyad',
+                          labelStyle: TextStyle(
+                              color: myFocusNode.hasFocus
+                                  ? Colors.red
+                                  : const Color.fromARGB(255, 119, 119, 119)),
+                          hintText: 'Soyad'),
                     ),
                   ),
                   Padding(
@@ -131,16 +151,15 @@ class _RegisterPageState extends State<RegisterPage> {
                     child: TextButton(
                       style: TextButton.styleFrom(backgroundColor: Colors.red),
                       onPressed: () {
-                        FirebaseFirestore.instance
-                            .collection("loginidpass")
-                            .add({
-                          "id": 0,
-                          "ad": adController.text,
-                          "soyad": soyadController.text,
-                          "email": mailController.text,
-                          "password": sifreController.text
-                        });
-                        _showMyDialog(context);
+                        signUp(context,
+                            ad: adController.text,
+                            soyad: soyadController.text,
+                            email: mailController.text,
+                            password: sifreController.text);
+                        const snackBar = SnackBar(
+                          content: Text('Kayıt başarıyla oluşturuldu!'),
+                        );
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
                       },
                       child: const Text(
                         'Kaydol',

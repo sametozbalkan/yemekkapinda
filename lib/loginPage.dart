@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:yemekkapinda/homePage.dart';
 import 'package:yemekkapinda/registerPage.dart';
 
@@ -25,14 +27,27 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  late TextEditingController mailController;
-  late TextEditingController sifreController;
-  @override
-  void initState() {
-    super.initState();
-    mailController = TextEditingController();
-    sifreController = TextEditingController();
+  final userCollection = FirebaseFirestore.instance.collection("loginidpass");
+  final firebaseAuth = FirebaseAuth.instance;
+
+  Future<void> signIn(BuildContext context,
+      {required String email, required String password}) async {
+    final navigator = Navigator.of(context);
+    try {
+      final UserCredential userCredential = await firebaseAuth
+          .signInWithEmailAndPassword(email: email, password: password);
+      if (userCredential.user != null) {
+        navigator.push(MaterialPageRoute(
+          builder: (context) => HomePage(),
+        ));
+      }
+    } on FirebaseAuthException catch (e) {
+      Fluttertoast.showToast(msg: e.message!, toastLength: Toast.LENGTH_LONG);
+    }
   }
+
+  final mailController = TextEditingController();
+  final sifreController = TextEditingController();
 
   @override
   void dispose() {
@@ -44,8 +59,7 @@ class _LoginPageState extends State<LoginPage> {
   FocusNode myFocusNode = FocusNode();
   @override
   Widget build(BuildContext context) {
-    CollectionReference logRef =
-        FirebaseFirestore.instance.collection("loginidpass");
+    final navigator = Navigator.of(context);
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -108,13 +122,13 @@ class _LoginPageState extends State<LoginPage> {
                     child: TextButton(
                       style: TextButton.styleFrom(backgroundColor: Colors.red),
                       onPressed: () {
-                        if (mailController.text == "admin" &&
-                            sifreController.text == "123") {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (_) => HomePage()));
-                        } else {
-                          _showMyDialog(context);
-                        }
+                        signIn(context,
+                            email: mailController.text,
+                            password: sifreController.text);
+                        const snackBar = SnackBar(
+                          content: Text('Giriş yapıldı!'),
+                        );
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
                       },
                       child: const Text(
                         'Giriş',
@@ -149,11 +163,9 @@ class _LoginPageState extends State<LoginPage> {
                               const Text('Yeni kullanıcı mısınız?'),
                               TextButton(
                                 onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (_) =>
-                                              const RegisterPage()));
+                                  navigator.push(MaterialPageRoute(
+                                      builder: (context) =>
+                                          const RegisterPage()));
                                 },
                                 child: const Text(
                                   'Üye Ol',
@@ -165,8 +177,6 @@ class _LoginPageState extends State<LoginPage> {
                           )),
                     ],
                   ),
-                  const SizedBox(height: 100),
-                  const Text("use admin 123")
                 ],
               ),
             ),
@@ -175,31 +185,4 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
-}
-
-Future<void> _showMyDialog(context) async {
-  return showDialog<void>(
-    context: context,
-    barrierDismissible: false, // user must tap button!
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: const Text('Hata'),
-        content: const SingleChildScrollView(
-          child: ListBody(
-            children: <Widget>[
-              Text('E-mail veya şifre yanlış!'),
-            ],
-          ),
-        ),
-        actions: <Widget>[
-          TextButton(
-            child: const Text('Tamam'),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-        ],
-      );
-    },
-  );
 }
