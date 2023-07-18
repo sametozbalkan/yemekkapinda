@@ -19,6 +19,7 @@ class Start extends StatelessWidget {
   const Start({super.key});
   @override
   Widget build(BuildContext context) {
+    isSignIn(context);
     return MaterialApp(
       theme: ThemeData(fontFamily: 'PoetsenOne-Regular'),
       debugShowCheckedModeBanner: false,
@@ -34,32 +35,22 @@ class StartPage extends StatefulWidget {
   State<StartPage> createState() => _StartPageState();
 }
 
-class _StartPageState extends State<StartPage> {
-  Future<void> isSignIn(BuildContext context,
+Future<void> isSignIn(BuildContext context,
       ) async {
-    final navigator = Navigator.of(context);
     try {
         final QuerySnapshot kisiBilgileri = await FirebaseFirestore.instance
             .collection("loginidpass")
             .where("email", isEqualTo: FirebaseAuth.instance.currentUser!.email!)
             .get();
-        setState(() async{
-          profilAd = kisiBilgileri.docs[0]["ad"].toString();
+         profilAd = kisiBilgileri.docs[0]["ad"].toString();
           profilSoyad = kisiBilgileri.docs[0]["soyad"].toString();
           profilMail= kisiBilgileri.docs[0]["email"].toString();
-          const snackBar = SnackBar(
-            content: Text('Giriş yapıldı!'),
-          );
-          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-          navigator.push(MaterialPageRoute(
-            builder: (context) => HomePage(),
-          ));
-        });
     } on FirebaseAuthException catch (e) {
       Fluttertoast.showToast(msg: e.message!, toastLength: Toast.LENGTH_LONG);
     }
   }
 
+class _StartPageState extends State<StartPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,7 +58,6 @@ class _StartPageState extends State<StartPage> {
             stream: FirebaseAuth.instance.authStateChanges(),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                isSignIn(context);
                 return HomePage();
               } else {
                 return const LoginPage();

@@ -16,7 +16,6 @@ class mainPage extends StatefulWidget {
 bool _isShow = true;
 FocusNode myFocusNode = FocusNode();
 
-// ignore: camel_case_types
 class _mainPageState extends State<mainPage> {
   void restorantEkle() async {
     FirebaseFirestore.instance.collection("restorants").add({

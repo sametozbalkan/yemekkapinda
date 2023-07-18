@@ -51,18 +51,12 @@ class _LoginPageState extends State<LoginPage> {
             .collection("loginidpass")
             .where("email", isEqualTo: mailController.text.trim())
             .get();
-        setState(() async {
-          profilAd = kisiBilgileri.docs[0]["ad"].toString();
+            profilAd = kisiBilgileri.docs[0]["ad"].toString();
           profilSoyad = kisiBilgileri.docs[0]["soyad"].toString();
           profilMail = kisiBilgileri.docs[0]["email"].toString();
-          const snackBar = SnackBar(
-            content: Text('Giriş yapıldı!'),
-          );
-          ScaffoldMessenger.of(context).showSnackBar(snackBar);
           navigator.push(MaterialPageRoute(
             builder: (context) => HomePage(),
           ));
-        });
       }
     } on FirebaseAuthException catch (e) {
       Fluttertoast.showToast(msg: e.message!, toastLength: Toast.LENGTH_LONG);

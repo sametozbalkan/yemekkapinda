@@ -29,7 +29,7 @@ class _basketPageState extends State<basketPage> {
                       child: Column(
                         children: [
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Text(
                                 "Tahmini teslimat süresi:",
