@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:yemekkapinda/pages/profilePage.dart';
-import 'package:yemekkapinda/pages/restorantCards.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:yemekkapinda/restaurantPage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:yemekkapinda/homePage.dart';
 
 // ignore: camel_case_types
 class mainPage extends StatefulWidget {
@@ -11,12 +12,6 @@ class mainPage extends StatefulWidget {
   @override
   State<mainPage> createState() => _mainPageState();
 }
-
-final TextEditingController abi31 = TextEditingController();
-
-// ignore: camel_case_types
-
-final List<restorantDetay> mainRestorantKartlari = [];
 
 bool _isShow = true;
 FocusNode myFocusNode = FocusNode();
@@ -30,6 +25,65 @@ class _mainPageState extends State<mainPage> {
       "restorantIsmi": "abi",
       "tanimlama": "yokke",
       "yildizSayisi": 2.5
+    });
+  }
+
+  String? _currentAddress;
+  Position? _currentPosition;
+
+  Future<bool> _handleLocationPermission() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text(
+              'Location services are disabled. Please enable the services')));
+      return false;
+    }
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Location permissions are denied')));
+        return false;
+      }
+    }
+    if (permission == LocationPermission.deniedForever) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text(
+              'Location permissions are permanently denied, we cannot request permissions.')));
+      return false;
+    }
+    return true;
+  }
+
+  Future<void> _getCurrentPosition() async {
+    final hasPermission = await _handleLocationPermission();
+
+    if (!hasPermission) return;
+    await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
+        .then((Position position) {
+      setState(() => _currentPosition = position);
+      _getAddressFromLatLng(_currentPosition!);
+    }).catchError((e) {
+      debugPrint(e);
+    });
+  }
+
+  Future<void> _getAddressFromLatLng(Position position) async {
+    await placemarkFromCoordinates(
+            _currentPosition!.latitude, _currentPosition!.longitude)
+        .then((List<Placemark> placemarks) {
+      Placemark place = placemarks[0];
+      setState(() {
+        _currentAddress =
+            '${place.street}, ${place.subLocality}, ${place.subAdministrativeArea}, ${place.postalCode}';
+      });
+    }).catchError((e) {
+      debugPrint(e);
     });
   }
 
@@ -114,7 +168,7 @@ class _mainPageState extends State<mainPage> {
                           child: SingleChildScrollView(
                             scrollDirection: Axis.horizontal,
                             child: Text(
-                              profilKayitlari[0].adres,
+                              adamke,
                               style: const TextStyle(
                                   color: Colors.white, fontSize: 18),
                             ),
@@ -127,9 +181,10 @@ class _mainPageState extends State<mainPage> {
                             color: Colors.transparent),
                         child: FittedBox(
                           child: IconButton(
-                              tooltip: "Adres Değiştir",
+                              tooltip: "Adresi Yenile",
                               onPressed: () {
-                                _showMyDialog(context);
+                                _getCurrentPosition();
+                                adamke= _currentAddress ?? "";
                               },
                               icon: const Icon(
                                 Icons.change_circle,
@@ -277,124 +332,6 @@ class _mainPageState extends State<mainPage> {
             ),
           ],
         ));
-  }
-
-  @override
-  initState() {
-    super.initState();
-  }
-
-  Future<void> _showMyDialog(context) async {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Adres Değiştir'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                const Padding(
-                  padding: EdgeInsets.only(bottom: 10),
-                  child: Text('Adres giriniz:'),
-                ),
-                TextField(
-                  controller: abi31,
-                  decoration: InputDecoration(
-                    focusedBorder: const OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.red),
-                    ),
-                    border: const OutlineInputBorder(),
-                    labelText: "",
-                    fillColor: Colors.red,
-                    labelStyle: TextStyle(
-                        color: myFocusNode.hasFocus
-                            ? Colors.red
-                            : const Color.fromARGB(255, 119, 119, 119)),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('Değiştir'),
-              onPressed: () {
-                setState(() {
-                  if (abi31.text == "") {
-                    _showMyDialog3(context);
-                  } else {
-                    profilKayitlari[0].adres = abi31.text;
-                    Navigator.pop(context);
-                    _showMyDialog2(context);
-                  }
-                });
-              },
-            ),
-            TextButton(
-              child: const Text('Çık'),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            )
-          ],
-        );
-      },
-    );
-  }
-
-  Future<void> _showMyDialog2(context) async {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Başarılı'),
-          content: const SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                Text('Adres değiştirildi!'),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('Tamam'),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            )
-          ],
-        );
-      },
-    );
-  }
-
-  Future<void> _showMyDialog3(context) async {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Hata'),
-          content: const SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                Text('Adres kısmı boş olamaz'),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('Tamam'),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            )
-          ],
-        );
-      },
-    );
   }
 }
 

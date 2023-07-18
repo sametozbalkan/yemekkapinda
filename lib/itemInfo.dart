@@ -368,7 +368,7 @@ class _InfoPageState extends State<InfoPage> {
           actions: <Widget>[
             TextButton(
               child: const Text('Kaldır ve Ekle'),
-              onPressed: () {
+              onPressed: () async {
                 setState(() {
                   currentIndex = 1;
                 });
@@ -395,6 +395,7 @@ class _InfoPageState extends State<InfoPage> {
                   ),
                 );
                 ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                Navigator.pop(context);
               },
             ),
             TextButton(

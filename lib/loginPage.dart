@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:yemekkapinda/homePage.dart';
+import 'package:yemekkapinda/pages/profilePage.dart';
 import 'package:yemekkapinda/registerPage.dart';
 
 class Login extends StatelessWidget {
@@ -28,26 +29,45 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final userCollection = FirebaseFirestore.instance.collection("loginidpass");
-  final firebaseAuth = FirebaseAuth.instance;
+  final TextEditingController mailController = TextEditingController();
+  final TextEditingController sifreController = TextEditingController();
+  bool isPasswordVisible = false;
+  @override
+  void initState() {
+    super.initState();
+    mailController.addListener(() {
+      setState(() {});
+    });
+  }
 
   Future<void> signIn(BuildContext context,
       {required String email, required String password}) async {
     final navigator = Navigator.of(context);
     try {
-      final UserCredential userCredential = await firebaseAuth
+      final UserCredential userCredential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
       if (userCredential.user != null) {
-        navigator.push(MaterialPageRoute(
-          builder: (context) => HomePage(),
-        ));
+        final QuerySnapshot kisiBilgileri = await FirebaseFirestore.instance
+            .collection("loginidpass")
+            .where("email", isEqualTo: mailController.text.trim())
+            .get();
+        setState(() async {
+          profilAd = kisiBilgileri.docs[0]["ad"].toString();
+          profilSoyad = kisiBilgileri.docs[0]["soyad"].toString();
+          profilMail = kisiBilgileri.docs[0]["email"].toString();
+          const snackBar = SnackBar(
+            content: Text('Giriş yapıldı!'),
+          );
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          navigator.push(MaterialPageRoute(
+            builder: (context) => HomePage(),
+          ));
+        });
       }
     } on FirebaseAuthException catch (e) {
       Fluttertoast.showToast(msg: e.message!, toastLength: Toast.LENGTH_LONG);
     }
   }
-
-  final mailController = TextEditingController();
-  final sifreController = TextEditingController();
 
   @override
   void dispose() {
@@ -82,6 +102,17 @@ class _LoginPageState extends State<LoginPage> {
                     child: TextField(
                       controller: mailController,
                       decoration: InputDecoration(
+                          suffixIcon: mailController.text.isEmpty
+                              ? Container(width: 0)
+                              : IconButton(
+                                  icon: const Icon(Icons.close),
+                                  color: Colors.red,
+                                  onPressed: () {
+                                    mailController.clear();
+                                  },
+                                ),
+                          prefixIcon:
+                              const Icon(Icons.email, color: Colors.red),
                           focusedBorder: const OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.red),
                           ),
@@ -99,8 +130,20 @@ class _LoginPageState extends State<LoginPage> {
                         left: 15.0, right: 15.0, top: 15, bottom: 30),
                     child: TextField(
                       controller: sifreController,
-                      obscureText: true,
+                      obscureText: !isPasswordVisible,
                       decoration: InputDecoration(
+                          suffixIcon: IconButton(
+                            icon: isPasswordVisible
+                                ? const Icon(Icons.visibility)
+                                : const Icon(Icons.visibility_off),
+                            onPressed: () {
+                              setState(() {
+                                isPasswordVisible = !isPasswordVisible;
+                              });
+                            },
+                          ),
+                          prefixIcon:
+                              const Icon(Icons.password, color: Colors.red),
                           focusedBorder: const OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.red),
                           ),
@@ -113,6 +156,9 @@ class _LoginPageState extends State<LoginPage> {
                           hintText: 'Şifre girin'),
                     ),
                   ),
+                  const SizedBox(
+                    height: 20,
+                  ),
                   Container(
                     height: 50,
                     width: 250,
@@ -121,14 +167,10 @@ class _LoginPageState extends State<LoginPage> {
                         borderRadius: BorderRadius.circular(20)),
                     child: TextButton(
                       style: TextButton.styleFrom(backgroundColor: Colors.red),
-                      onPressed: () {
+                      onPressed: () async {
                         signIn(context,
                             email: mailController.text,
                             password: sifreController.text);
-                        const snackBar = SnackBar(
-                          content: Text('Giriş yapıldı!'),
-                        );
-                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
                       },
                       child: const Text(
                         'Giriş',

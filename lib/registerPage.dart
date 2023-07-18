@@ -1,9 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:yemekkapinda/startPage.dart';
-
 import 'loginPage.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -32,9 +29,16 @@ class _RegisterPageState extends State<RegisterPage> {
         navigator.push(MaterialPageRoute(
           builder: (context) => const LoginPage(),
         ));
+        const snackBar = SnackBar(
+          content: Text('Kayıt başarıyla oluşturuldu!'),
+        );
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
       }
     } on FirebaseAuthException catch (e) {
-      Fluttertoast.showToast(msg: e.message!, toastLength: Toast.LENGTH_LONG);
+      var snackBar = SnackBar(
+        content: Text(e.message!),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
 
@@ -48,21 +52,43 @@ class _RegisterPageState extends State<RegisterPage> {
         .set({"email": email, "ad": ad, "soyad": soyad, "password": password});
   }
 
-  final mailController = TextEditingController();
-  final sifreController = TextEditingController();
-  final adController = TextEditingController();
-  final soyadController = TextEditingController();
+  final TextEditingController mailController = TextEditingController();
+  final TextEditingController sifreController = TextEditingController();
+  final TextEditingController sifreController2 = TextEditingController();
+  final TextEditingController adController = TextEditingController();
+  final TextEditingController soyadController = TextEditingController();
+
+  @override
+  void dispose() {
+    mailController.dispose();
+    sifreController.dispose();
+    sifreController2.dispose();
+    adController.dispose();
+    soyadController.dispose();
+    super.dispose();
+  }
 
   FocusNode myFocusNode = FocusNode();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back, color: Colors.red),
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => const LoginPage(),
+              ));
+            },
+          )),
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
             SizedBox(
               width: double.infinity,
-              height: MediaQuery.of(context).size.height,
+              height: MediaQuery.of(context).size.height-120,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -125,7 +151,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(15, 10, 15, 50),
+                    padding: const EdgeInsets.fromLTRB(15, 10, 15, 0),
                     child: TextField(
                       controller: sifreController,
                       obscureText: true,
@@ -142,6 +168,24 @@ class _RegisterPageState extends State<RegisterPage> {
                           hintText: 'Şifre girin'),
                     ),
                   ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(15, 10, 15, 50),
+                    child: TextField(
+                      controller: sifreController2,
+                      obscureText: true,
+                      decoration: InputDecoration(
+                          focusedBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.red),
+                          ),
+                          border: const OutlineInputBorder(),
+                          labelText: 'Şifreyi Onayla',
+                          labelStyle: TextStyle(
+                              color: myFocusNode.hasFocus
+                                  ? Colors.red
+                                  : const Color.fromARGB(255, 119, 119, 119)),
+                          hintText: 'Şifreyi tekrar girin'),
+                    ),
+                  ),
                   Container(
                     height: 50,
                     width: 250,
@@ -151,15 +195,18 @@ class _RegisterPageState extends State<RegisterPage> {
                     child: TextButton(
                       style: TextButton.styleFrom(backgroundColor: Colors.red),
                       onPressed: () {
-                        signUp(context,
-                            ad: adController.text,
-                            soyad: soyadController.text,
-                            email: mailController.text,
-                            password: sifreController.text);
-                        const snackBar = SnackBar(
-                          content: Text('Kayıt başarıyla oluşturuldu!'),
-                        );
-                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        if(sifreController.text==sifreController2.text){
+                          signUp(context,
+                              ad: adController.text,
+                              soyad: soyadController.text,
+                              email: mailController.text,
+                              password: sifreController.text);
+                        } else {
+                          const snackBar = SnackBar( backgroundColor: Colors.red, elevation: 0,
+                            content: Text('Şifreler farklı!', style: TextStyle(color: Colors.white, fontSize: 14),),
+                          );
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        }
                       },
                       child: const Text(
                         'Kaydol',
@@ -174,34 +221,6 @@ class _RegisterPageState extends State<RegisterPage> {
           ],
         ),
       ),
-    );
-  }
-
-  Future<void> _showMyDialog(context) async {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Başarılı'),
-          content: const SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                Text('Kayıt başarıyla oluşturuldu!'),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('Giriş Sayfasına Dön'),
-              onPressed: () {
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (_) => const Start()));
-              },
-            ),
-          ],
-        );
-      },
     );
   }
 }
