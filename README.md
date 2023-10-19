@@ -1,3 +1,3 @@
-# Online Yemek Siparişi Uygulaması
+# Online Food Ordering Mobile Application
 
-Flutter kullanılarak yapılmış online yemek siparişi uygulaması. Henüz erken aşamada.
+Made with Flutter (beta)
